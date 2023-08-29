@@ -15,11 +15,14 @@ pipeline {
                     if (javaDetected) {
                         echo "Java files detected"
                     }
-                    if (pythonDetected) {
+                    else if (pythonDetected) {
                         echo "Python files detected"
                     }
-                    if (dockerfileDetected) {
+                    else if (dockerfileDetected) {
                         echo "Dockerfiles detected"
+                    }
+                    else {
+                        echo "No approved programming language detected"
                     }
                 }
             }
