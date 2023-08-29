@@ -13,6 +13,7 @@ pipeline {
                     pipelineLogger.info("Java detected ${fileList}")
                     for (String filePath : fileList) {
                         if (filePath.endsWith('.java')) {
+                            pipelineLogger.info("Java detected path")
                             javaDetected = true
                         }
                         if (filePath.endsWith('.py')) {
