@@ -6,35 +6,20 @@ pipeline {
             steps {
                 script {
                     def fileList = sh(script: 'git ls-files', returnStdout: true).trim().split('\n')
-                    echo "Detected files: ${fileList}"
+                    echo "Detected files: ${fileList.join(', ')}"
 
-                    boolean javaDetected = false
-                    boolean pythonDetected = false
-                    boolean dockerfileDetected = false
-
-                    for (String filePath : fileList) {
-                        if (filePath.endsWith('.java')) {
-                            echo "Java file detected: ${filePath}"
-                            javaDetected = true
-                        }
-                        if (filePath.endsWith('.py')) {
-                            echo "Python file detected: ${filePath}"
-                            pythonDetected = true
-                        }
-                        if (filePath.endsWith('Dockerfile')) {
-                            echo "Dockerfile detected: ${filePath}"
-                            dockerfileDetected = true
-                        }
-                    }
+                    def javaDetected = fileList.any { it.endsWith('.java') }
+                    def pythonDetected = fileList.any { it.endsWith('.py') }
+                    def dockerfileDetected = fileList.any { it.endsWith('Dockerfile') }
 
                     if (javaDetected) {
-                        echo "Java detected"
+                        echo "Java files detected"
                     }
                     if (pythonDetected) {
-                        echo "Python detected"
+                        echo "Python files detected"
                     }
                     if (dockerfileDetected) {
-                        echo "Dockerfile detected"
+                        echo "Dockerfiles detected"
                     }
                 }
             }
