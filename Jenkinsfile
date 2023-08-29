@@ -17,7 +17,6 @@ pipeline {
                     if (fileList.contains(".py")) {
                         pipelineLogger.info("Python detected")
                     }
-                    }
                 }
             }
         }
