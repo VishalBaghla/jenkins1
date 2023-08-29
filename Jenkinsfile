@@ -5,26 +5,28 @@ pipeline {
         stage('Detect File Types') {
             steps {
                 script {
-                    // Clone the repository
-//                     checkout scm
-
-                    // Run git ls-files command to get a list of tracked files
                     def fileList = sh(script: 'git ls-files', returnStdout: true).trim().split('\n')
-                    echo "Java detected ${fileList}"
+                    echo "Detected files: ${fileList}"
+
+                    boolean javaDetected = false
+                    boolean pythonDetected = false
+
                     for (String filePath : fileList) {
                         if (filePath.endsWith('.java')) {
-                            pipelineLogger.info("Java detected path")
+                            echo "Java file detected: ${filePath}"
                             javaDetected = true
                         }
                         if (filePath.endsWith('.py')) {
+                            echo "Python file detected: ${filePath}"
                             pythonDetected = true
                         }
                     }
+
                     if (javaDetected) {
-                        pipelineLogger.info("Java detected")
+                        echo "Java detected"
                     }
                     if (pythonDetected) {
-                        pipelineLogger.info("Python detected")
+                        echo "Python detected"
                     }
                 }
             }
