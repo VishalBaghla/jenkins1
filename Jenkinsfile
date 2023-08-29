@@ -12,14 +12,14 @@ pipeline {
                     def pythonDetected = fileList.any { it.endsWith('.py') }
                     def dockerfileDetected = fileList.any { it.endsWith('Dockerfile') }
 
-                    if (javaDetected) {
+                    if (dockerfileDetected) {
+                        echo "Dockerfiles detected"
+                    }
+                    else if (javaDetected) {
                         echo "Java files detected"
                     }
                     else if (pythonDetected) {
                         echo "Python files detected"
-                    }
-                    else if (dockerfileDetected) {
-                        echo "Dockerfiles detected"
                     }
                     else {
                         echo "No approved programming language detected"
