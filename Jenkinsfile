@@ -10,6 +10,7 @@ pipeline {
 
                     boolean javaDetected = false
                     boolean pythonDetected = false
+                    boolean dockerfileDetected = false
 
                     for (String filePath : fileList) {
                         if (filePath.endsWith('.java')) {
@@ -20,6 +21,10 @@ pipeline {
                             echo "Python file detected: ${filePath}"
                             pythonDetected = true
                         }
+                        if (filePath.endsWith('Dockerfile')) {
+                            echo "Dockerfile detected: ${filePath}"
+                            dockerfileDetected = true
+                        }
                     }
 
                     if (javaDetected) {
@@ -27,6 +32,9 @@ pipeline {
                     }
                     if (pythonDetected) {
                         echo "Python detected"
+                    }
+                    if (dockerfileDetected) {
+                        echo "Dockerfile detected"
                     }
                 }
             }
