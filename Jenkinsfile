@@ -10,7 +10,7 @@ pipeline {
                         branches: [[ name: 'testbranch' ]],
                         doGenerateSubmoduleConfigurations: false,
                         userRemoteConfigs: [[credentialsId: 'jenkins1', url: 'git@github.com:VishalBaghla/test.git']],
-                        extensions: [[$class: 'RelativeTargetDirectory', submoduleCfg: [], relativeTargetDir: 'deployment']]
+                        extensions: [[$class: 'RelativeTargetDirectory', submoduleCfg: []]]
 //                         extensions: [[$class: 'RelativeTargetDirectory', $class: 'LocalBranch', localBranch: "**", submoduleCfg: [], relativeTargetDir: 'deployment']]
                     ])
 //                     checkout([
