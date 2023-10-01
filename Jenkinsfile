@@ -36,7 +36,7 @@ pipeline {
                             git status
                             git add .
                             git commit -m 'Replace dev with prod'
-                            git push ${env.GIT_USERNAME}:${env.GIT_PASSWORD}@${env.GIT_REPO_URL} master
+                            git push ${env.GIT_USERNAME}:${env.GIT_PASSWORD}@${env.GIT_REPO_URL} main
                         """
                     }
                 }
