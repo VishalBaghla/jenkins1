@@ -1,32 +1,42 @@
 pipeline {
     agent any
+
     stages {
-        stage("Checkout code") {
+        stage('Clone Source Repository') {
             steps {
                 script {
-                    checkout([
-                      $class: 'GitSCM',
-                      branches: [[ name: "main" ]],
-                      userRemoteConfigs: [[credentialsId: 'jenkins1', url: "https://github.com/VishalBaghla/test.git"]],
-                      extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'deployment']]
-                    ])
-                    // Create the test.sh file
-                    writeFile file: 'test.sh', text: '#!/bin/bash\n\necho "Hello, world!"'
-                    // Add, commit, and push the changes
-                    sh 'git add gitsync.sh'
-                    sh 'git commit -m "Add gitsync.sh"'
-                    sh 'git push origin master'
-//                    sh "chmod 755 gitsync.sh && ./gitsync.sh"
+                    // Clone the source repository to a workspace
+                    checkout([$class: 'GitSCM',
+                              credentialsId: 'jenkins1',
+                              branches: [[name: 'main']],  // Replace with the branch you want to clone
+                              userRemoteConfigs: [[url: 'https://github.com/VishalBaghla/test.git']]])
                 }
             }
         }
-    }
-    post {
-        success {
-          sh "echo Success."
+
+        stage('Create test.sh File') {
+            steps {
+                // Create the test.sh file in the workspace
+                sh 'echo "#!/bin/bash\n\necho \"This is a test script!\"" > test.sh'
+            }
         }
-        failure {
-          sh "echo Failure."
+
+        stage('Push Changes to Target Repository') {
+            steps {
+                script {
+                    // Configure Git identity
+                    withCredentials([usernamePassword(credentialsId: 'jenkins1', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
+                        // Set Git user and email
+                        sh 'git config user.email "jenkins@example.com"'
+                        sh 'git config user.name "Jenkins"'
+
+                        // Add, commit, and push changes to the target repository
+                        sh 'git add test.sh'
+                        sh 'git commit -m "Add test.sh file via Jenkins"'
+                        sh 'git push https://username:${GIT_PASSWORD}@github.com/VishalBaghla/test.git main'  // Replace with target repo URL
+                    }
+                }
+            }
         }
     }
 }
