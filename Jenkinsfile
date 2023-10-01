@@ -7,8 +7,8 @@ pipeline {
                     // Clone the destination repository using the SSH key
                     checkout([$class: 'GitSCM',
                         branches: [[name: 'testbranch']], // You can change the branch as needed
-                        doGenerateSubmoduleConfigurations: false,
-                        extensions: [[$class: 'CloneOption', depth: 1, noTags: true, reference: '', shallow: true]],
+//                         doGenerateSubmoduleConfigurations: false,
+//                         extensions: [[$class: 'CloneOption', depth: 1, noTags: true, reference: '', shallow: true]],
                         userRemoteConfigs: [[credentialsId: 'jenkins1', url: 'git@github.com:VishalBaghla/test.git']]
                     ])
                 }
@@ -18,7 +18,7 @@ pipeline {
             steps {
                 script {
                     // Commit and push the changes
-                    sh "chmod 755 gitsync.sh && ./gitsync.sh"
+                    sh "ls -ltr & chmod 755 gitsync.sh && ./gitsync.sh"
                 }
             }
         }
