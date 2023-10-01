@@ -11,14 +11,16 @@ pipeline {
                 dir(documentationDir) {
                     git credentialsId: 'temp', url: 'https://github.com/VishalBaghla/test.git', branch: "main", changelog: false
                 }
-                dir(documentationDir) {
-                    sh '''
-                    git checkout main
-                    touch test1
-                    git add test1
-                    git commit -m "test"
-                    git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/VishalBaghla/test.git -v
-                '''
+                withCredentials([usernamePassword(credentialsId: 'temp', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
+                    dir(documentationDir) {
+                        sh '''
+                        git checkout main
+                        touch test1
+                        git add test1
+                        git commit -m "test"
+                        git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/VishalBaghla/test.git -v
+                    '''
+                    }
                 }
                 withCredentials([usernamePassword(credentialsId: 'temp', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
                 sh """
