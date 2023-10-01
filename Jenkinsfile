@@ -19,6 +19,7 @@ pipeline {
             steps {
                 script {
                     // Commit and push the changes
+                    sh "cd deployment"
                     sh 'ls -ltr  & cd deployment & ls -ltr & chmod 755 gitsync.sh && ./gitsync.sh'
                 }
             }
