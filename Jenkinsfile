@@ -28,11 +28,11 @@ pipeline {
             steps {
                 script {
                     // Commit and push the changes
-                    sh '''
-                        cp -rf "path/test" "path_new/test"
-                        find path_new/ -type f -exec sed -i "s/file/new_file/g" {} \;
-                        git add -u && git commit -m "Test" && git push
-                    '''
+                    sh """
+                        cp -rf path/test path_new/test
+                        find path_new/ -type f -exec sed -i 's/file/new_file/g' {} \\;
+                        git add path_new/ && git commit -m 'Test' && git push
+                    """
                 }
             }
         }
