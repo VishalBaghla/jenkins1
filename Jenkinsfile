@@ -14,8 +14,7 @@ pipeline {
                     touch test1
                     git add test1
                     git commit -m "test"
-                    git push
-                    git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/VishalBaghla/test.git new -v
+                    git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/VishalBaghla/test.git -v
                 """
                 }
             }
