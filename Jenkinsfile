@@ -11,8 +11,8 @@ pipeline {
                     #!/bin/bash
                     set -x
                     git checkout -b new
-                    touch test
-                    git add test
+                    touch test1
+                    git add test1
                     git commit -m "test"
                     git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com:VishalBaghla/test.git
                 """
