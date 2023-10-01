@@ -19,10 +19,11 @@ pipeline {
                 script {
                     // Commit and push the changes
                     sh 'touch test'
+                    sh 'git checkout test'
                     sh 'git add test'
                     sh 'git commit -m "Add test.sh"'
                     sh 'git status'
-                    sh 'git push origin main' // You can change the branch as needed
+                    sh 'git push origin test' // You can change the branch as needed
                 }
             }
         }
