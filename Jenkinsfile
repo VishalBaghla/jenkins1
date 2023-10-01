@@ -13,13 +13,6 @@ pipeline {
                         userRemoteConfigs: [[credentialsId: 'jenkins1', url: 'git@github.com:VishalBaghla/test.git']],
                         extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'deployment']]
                     ])
-                    checkout([
-                        $class: 'GitSCM',
-                        branches: [[ name: 'testbranch' ]],
-//                         doGenerateSubmoduleConfigurations: false,
-                        userRemoteConfigs: [[credentialsId: 'jenkins1', url: 'git@github.com:VishalBaghla/test.git']],
-                        extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'deployment']]
-                    ])
                 }
             }
         }
@@ -42,8 +35,8 @@ pipeline {
         failure {
           sh "echo Failure."
         }
-        always {
-            cleanWs()
-        }
+//         always {
+//             cleanWs()
+//         }
     }
 }
