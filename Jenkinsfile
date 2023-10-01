@@ -1,3 +1,5 @@
+def documentationDir = 'deploy'
+
 pipeline {
     agent any
 //     environment {
