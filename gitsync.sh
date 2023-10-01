@@ -1,6 +1,6 @@
 set -x
 mkdir repo
-git clone https://github.com/VishalBaghla/test.git
+git clone https://github.com/VishalBaghla/test.git repo/test
 cd repo/test
 git checkout -f main
 cp -rf ENV NEW_ENV
