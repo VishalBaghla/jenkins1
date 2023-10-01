@@ -23,7 +23,7 @@ pipeline {
                     git status
                     git add .
                     git commit -m "Performance Test Update"
-                    git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/VishalBaghla/test.git
+                    git push https://${GIT_USERNAME}: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@github.com/VishalBaghla/test.git
                 '''
                 }
             }
