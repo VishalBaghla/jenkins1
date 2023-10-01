@@ -1,4 +1,6 @@
 set -x
+git status
+git branch
 git checkout testbranch
 touch test1
 git add test1
