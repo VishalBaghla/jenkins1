@@ -1,50 +1,45 @@
-def documentationDir = 'deploy'
-
 pipeline {
     agent any
-//     environment {
-//         GIT_CREDENTIALS = credentials('jenkins1')
-//     }
+
+    environment {
+        GIT_REPO_URL = 'https://github.com/VishalBaghla/test.git'
+        TEMP_CREDENTIALS_ID = 'temp'
+    }
+
     stages {
-        stage('Create and Push test.sh') {
+        stage('Clone Repository') {
             steps {
-                dir(documentationDir) {
-                    git credentialsId: 'temp', url: 'https://github.com/VishalBaghla/test.git', branch: "main", changelog: false
-                }
-                withCredentials([usernamePassword(credentialsId: 'temp', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
-                    dir(documentationDir) {
-                        sh '''
-                        git checkout main
-                        touch test1
-                        git add test1
-                        git commit -m "test"
-                        git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/VishalBaghla/test.git -v
-                    '''
-                    }
-                }
-                withCredentials([usernamePassword(credentialsId: 'temp', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
-                sh """
-                    #!/bin/bash
-                    set -x
-                    git checkout main
-                    touch test1
-                    git add test1
-                    git commit -m "test"
-                    git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/VishalBaghla/test.git -v
-                """
+                script {
+                    // Clone the Git repository
+                    checkout([$class: 'GitSCM', branches: [[name: 'main']],
+                              userRemoteConfigs: [[url: env.GIT_REPO_URL]]])
                 }
             }
         }
-    }
-    post {
-        success {
-          sh "echo Success."
+        stage('Copy and Find/Replace') {
+            steps {
+                script {
+                    sh "cp -r ENV NEW_ENV"
+                    sh "find NEW_ENV -type f -exec sed -i 's/dev/prod/g' {} \\;"
+                }
+            }
         }
-        failure {
-          sh "echo Failure."
-        }
-        always {
-            cleanWs()
+        stage('Commit and Push') {
+            steps {
+                script {
+                    withCredentials([usernamePassword(credentialsId: env.TEMP_CREDENTIALS_ID,
+                            usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
+                        sh """
+                            git config user.email 'your@email.com'
+                            git config user.name 'Your Name'
+                            cd NEW_ENV
+                            git add -A
+                            git commit -m 'Replace dev with prod'
+                            git push ${env.GIT_USERNAME}:${env.GIT_PASSWORD}@${env.GIT_REPO_URL} master
+                        """
+                    }
+                }
+            }
         }
     }
 }
