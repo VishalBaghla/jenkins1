@@ -1,7 +1,6 @@
 set -x
 ls -ltr deployment/
-mkdir repo
-cd repo
+cd deployment
 #git clone -b trunk https://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@git.marriott.com/${ORG}/${APP}-configs.git
 #git branch -r
 #git branch
