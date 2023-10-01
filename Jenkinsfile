@@ -25,6 +25,7 @@ pipeline {
                     git commit -m "Performance Test Update"
                     git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/VishalBaghla/test.git
                 '''
+                }
             }
         }
     }
