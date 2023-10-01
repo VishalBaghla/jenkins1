@@ -10,11 +10,12 @@ pipeline {
                 sh """
                     #!/bin/bash
                     set -x
+                    git checkout main
                     git checkout -b new
                     touch test1
                     git add test1
                     git commit -m "test"
-                    git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/VishalBaghla/test.git
+                    git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/VishalBaghla/test.git new
                 """
                 }
             }
