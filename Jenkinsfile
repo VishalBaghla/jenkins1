@@ -8,7 +8,7 @@ pipeline {
                       $class: 'GitSCM',
                       branches: [[ name: "main" ]],
                       doGenerateSubmoduleConfigurations: false,
-                      userRemoteConfigs: [[credentialsId: 'vishalbaghla', url: "https://github.com/VishalBaghla/personal.git"]],
+                      userRemoteConfigs: [[credentialsId: 'jenkins1', url: "https://github.com/VishalBaghla/personal.git"]],
                       extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'deployment']]
                     ])
                     withCredentials([usernamePassword(credentialsId: 'GIT', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
