@@ -20,7 +20,9 @@ pipeline {
             steps {
                 script {
                     sh "cp -r ENV NEW_ENV"
-                    sh "find NEW_ENV -type f -exec sed -i 's/dev/prod/g' {} \\;"
+                    dir('NEW_ENV') { // Change working directory to NEW_ENV
+                        sh "find . -type f -exec sed -i 's/dev/prod/g' {} \\;"
+                    }
                 }
             }
         }
@@ -30,10 +32,8 @@ pipeline {
                     withCredentials([usernamePassword(credentialsId: env.TEMP_CREDENTIALS_ID,
                             usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
                         sh """
-                            git config user.email 'your@email.com'
-                            git config user.name 'Your Name'
-                            cd NEW_ENV
-                            git add -A
+                            git status
+                            git add .
                             git commit -m 'Replace dev with prod'
                             git push ${env.GIT_USERNAME}:${env.GIT_PASSWORD}@${env.GIT_REPO_URL} master
                         """
