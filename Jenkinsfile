@@ -6,7 +6,7 @@ pipeline {
     stages {
         stage('Create and Push test.sh') {
             steps {
-                withCredentials([sshUserPrivateKey(credentialsId: 'jenkins1', keyFileVariable: 'SSH_KEY']) {
+                withCredentials([sshUserPrivateKey(credentialsId: 'jenkins1', keyFileVariable: 'SSH_KEY')]) {
                 sh """
                     #!/bin/bash
                     set -x
