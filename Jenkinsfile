@@ -16,7 +16,7 @@ pipeline {
                     git commit -m "test"
                     git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com:VishalBaghla/test.git
                 """
-//                 }
+                }
             }
         }
     }
