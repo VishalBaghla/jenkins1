@@ -29,6 +29,7 @@ pipeline {
                     // Commit and push the changes
                     sh """
                         ls -ltr
+                        mkdir path_new
                         cp -rf path/test path_new/test
                         find path_new/ -type f -exec sed -i 's/file/new_file/g' {} \\;
                         git add path_new/ && git commit -m 'Test' && git push
