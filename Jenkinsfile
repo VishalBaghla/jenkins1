@@ -18,8 +18,8 @@ pipeline {
             steps {
                 script {
                     // Commit and push the changes
+                    sh 'git checkout testbranch'
                     sh 'touch test'
-                    sh 'git checkout test'
                     sh 'git add test'
                     sh 'git commit -m "Add test.sh"'
                     sh 'git status'
