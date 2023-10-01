@@ -9,6 +9,7 @@ pipeline {
                         branches: [[name: 'testbranch']], // You can change the branch as needed
 //                         doGenerateSubmoduleConfigurations: false,
 //                         extensions: [[$class: 'CloneOption', depth: 1, noTags: true, reference: '', shallow: true]],
+                        extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'deployment']],
                         userRemoteConfigs: [[credentialsId: 'jenkins1', url: 'git@github.com:VishalBaghla/test.git']]
                     ])
                 }
