@@ -11,11 +11,10 @@ pipeline {
                     #!/bin/bash
                     set -x
                     git checkout main
-                    git checkout -b new
                     touch test1
                     git add test1
                     git commit -m "test"
-                    git push --set-upstream origin new
+                    git push
                     git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/VishalBaghla/test.git new -v
                 """
                 }
