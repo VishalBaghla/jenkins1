@@ -10,8 +10,16 @@ pipeline {
                         branches: [[ name: 'testbranch' ]],
                         doGenerateSubmoduleConfigurations: false,
                         userRemoteConfigs: [[credentialsId: 'jenkins1', url: 'git@github.com:VishalBaghla/test.git']],
-                        extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'deployment']]
+                        extensions: [[$class: 'RelativeTargetDirectory', localBranch: "**", relativeTargetDir: 'deployment']]
                     ])
+//                     checkout([
+//                         $class: 'GitSCM',
+//                         branches: [[name: '*/feature/*']],
+//                         doGenerateSubmoduleConfigurations: false,
+//                         extensions: [[$class: 'LocalBranch', localBranch: "**"]],
+//                         submoduleCfg: [],
+//                         userRemoteConfigs: [[credentialsId: '99f978af-XXXX-XXXX-8147-2cf8f69ef864', url: 'http://TFS_SERVER:8080/tfs/DefaultCollection/Product/_git/Project']]
+//                     ])
                 }
             }
         }
