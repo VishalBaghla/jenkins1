@@ -29,10 +29,6 @@ pipeline {
                     // Commit and push the changes
                     sh '''
                     ls -ltr
-                    cd deployment
-                    ls -ltr
-                    git status
-                    '''
                     sh 'ls -ltr  & cd deployment & ls -ltr & chmod 755 gitsync.sh && ./gitsync.sh'
                 }
             }
