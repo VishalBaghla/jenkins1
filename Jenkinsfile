@@ -11,10 +11,10 @@ pipeline {
                       userRemoteConfigs: [[credentialsId: 'jenkins1', url: "https://github.com/VishalBaghla/test.git"]],
                       extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'deployment']]
                     ])
-                    withCredentials([usernamePassword(credentialsId: 'jenkins1', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
+//                     withCredentials([usernamePassword(credentialsId: 'jenkins1', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
                     sh "echo 'test'"
         //            sh "chmod 755 gitsync.sh && ./gitsync.sh"
-                    }
+//                     }
                 }
             }
         }
