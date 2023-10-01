@@ -5,12 +5,20 @@ pipeline {
             steps {
                 script {
                     // Clone the destination repository using the SSH key
-                    checkout([$class: 'GitSCM',
+                    checkout([
+                        $class: 'GitSCM',
                         branches: [[name: 'testbranch']], // You can change the branch as needed
 //                         doGenerateSubmoduleConfigurations: false,
 //                         extensions: [[$class: 'CloneOption', depth: 1, noTags: true, reference: '', shallow: true]],
-                        extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'deployment']],
                         userRemoteConfigs: [[credentialsId: 'jenkins1', url: 'git@github.com:VishalBaghla/test.git']]
+                        extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'deployment']],
+                    ])
+                    checkout([
+                        $class: 'GitSCM',
+                        branches: [[ name: "testbranch" ]],
+//                         doGenerateSubmoduleConfigurations: false,
+                        userRemoteConfigs: [[credentialsId: 'jenkins1', url: 'git@github.com:VishalBaghla/test.git']],
+                        extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'deployment']]
                     ])
                 }
             }
