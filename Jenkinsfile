@@ -22,7 +22,6 @@ pipeline {
                     sh '''
                     ls -ltr
                     ls -ltr deployment\
-                    ls -ltr deployment@tmp\
                     cd deployment
                     ls -ltr
                     '''
@@ -38,8 +37,8 @@ pipeline {
         failure {
           sh "echo Failure."
         }
-//         always {
-//             cleanWs()
-//         }
+        always {
+            cleanWs()
+        }
     }
 }
