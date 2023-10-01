@@ -28,4 +28,15 @@ pipeline {
             }
         }
     }
+    post {
+        success {
+          sh "echo Success."
+        }
+        failure {
+          sh "echo Failure."
+        }
+        always {
+            cleanWs()
+        }
+    }
 }
