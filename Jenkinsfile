@@ -6,7 +6,7 @@ pipeline {
                 script {
                     // Clone the destination repository using the SSH key
                     checkout([$class: 'GitSCM',
-                        branches: [[name: 'main']], // You can change the branch as needed
+                        branches: [[name: 'testbranch']], // You can change the branch as needed
                         doGenerateSubmoduleConfigurations: false,
                         extensions: [[$class: 'CloneOption', depth: 1, noTags: true, reference: '', shallow: true]],
                         userRemoteConfigs: [[credentialsId: 'jenkins1', url: 'git@github.com:VishalBaghla/test.git']]
