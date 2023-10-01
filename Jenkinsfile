@@ -17,15 +17,9 @@ pipeline {
         stage('Create and Push test.sh') {
             steps {
                 script {
-                    def testShContent = '''#!/bin/bash
-                    echo "This is a test script"
-                    '''
-
-                    // Create the test.sh file
-                    writeFile file: 'test.sh', text: testShContent
-
                     // Commit and push the changes
-                    sh 'git add .'
+                    sh 'touch test'
+                    sh 'git add test'
                     sh 'git commit -m "Add test.sh"'
                     sh 'git push origin master' // You can change the branch as needed
                 }
