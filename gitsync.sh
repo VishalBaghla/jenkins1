@@ -5,7 +5,7 @@ cd repo/test
 git checkout -f main
 cp -rf ENV NEW_ENV
 cd NEW_ENV
-find . -type f -exec sed -i "s/DEV/PROD/g" {} \;
+find . -type f -exec sed -i 's/DEV/PROD/g' {} \;
 git add .
 git commit -m "Creating new project configs"
 git status
