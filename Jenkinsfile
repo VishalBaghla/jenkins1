@@ -6,17 +6,18 @@ pipeline {
     stages {
         stage('Create and Push test.sh') {
             steps {
-//                 withCredentials([usernamePassword(credentialsId: 'jenkins1', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
+                withCredentials([usernamePassword(credentialsId: 'jenkins1', keyFileVariable: 'SSH_KEY']) {
                 sh """
                     #!/bin/bash
                     set -x
+                    ssh-agent bash -c 'ssh-add $SSH_KEY;
                     git checkout -b new
                     touch test1
                     git add test1
                     git commit -m "test"
                     git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com:VishalBaghla/test.git
                 """
-//                 }
+                }
             }
         }
     }
