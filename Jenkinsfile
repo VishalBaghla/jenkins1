@@ -1,8 +1,8 @@
 pipeline {
     agent any
-    environment {
-        GIT_CREDENTIALS = credentials('jenkins1')
-    }
+//     environment {
+//         GIT_CREDENTIALS = credentials('jenkins1')
+//     }
     stages {
         stage('Create and Push test.sh') {
             steps {
