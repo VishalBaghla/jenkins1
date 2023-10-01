@@ -1,4 +1,5 @@
 set -x
+cd deployment
 git status
 git branch
 git checkout testbranch
