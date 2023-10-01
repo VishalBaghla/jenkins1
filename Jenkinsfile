@@ -18,12 +18,7 @@ pipeline {
             steps {
                 script {
                     // Commit and push the changes
-                    sh 'git checkout testbranch'
-                    sh 'touch test'
-                    sh 'git add test'
-                    sh 'git commit -m "Add test.sh"'
-                    sh 'git status'
-                    sh 'git push' // You can change the branch as needed
+                    sh "chmod 755 gitsync.sh && ./gitsync.sh"
                 }
             }
         }
