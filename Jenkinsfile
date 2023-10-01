@@ -7,14 +7,16 @@ pipeline {
                     checkout([
                       $class: 'GitSCM',
                       branches: [[ name: "main" ]],
-//                       doGenerateSubmoduleConfigurations: false,
                       userRemoteConfigs: [[credentialsId: 'jenkins1', url: "https://github.com/VishalBaghla/test.git"]],
                       extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'deployment']]
                     ])
-//                     withCredentials([usernamePassword(credentialsId: 'jenkins1', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
-                    sh "echo 'test'"
-                   sh "chmod 755 gitsync.sh && ./gitsync.sh"
-//                     }
+                    // Create the test.sh file
+                    writeFile file: 'test.sh', text: '#!/bin/bash\n\necho "Hello, world!"'
+                    // Add, commit, and push the changes
+                    sh 'git add gitsync.sh'
+                    sh 'git commit -m "Add gitsync.sh"'
+                    sh 'git push origin master'
+//                    sh "chmod 755 gitsync.sh && ./gitsync.sh"
                 }
             }
         }
