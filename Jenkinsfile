@@ -23,7 +23,7 @@ pipeline {
                     sh 'git add test'
                     sh 'git commit -m "Add test.sh"'
                     sh 'git status'
-                    sh 'git push origin test' // You can change the branch as needed
+                    sh 'git push' // You can change the branch as needed
                 }
             }
         }
