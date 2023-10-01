@@ -10,7 +10,8 @@ pipeline {
                         branches: [[ name: 'testbranch' ]],
                         doGenerateSubmoduleConfigurations: false,
                         userRemoteConfigs: [[credentialsId: 'jenkins1', url: 'git@github.com:VishalBaghla/test.git']],
-                        extensions: [[$class: 'RelativeTargetDirectory', $class: 'LocalBranch', localBranch: "**", submoduleCfg: [], relativeTargetDir: 'deployment']]
+                        extensions: [[$class: 'RelativeTargetDirectory', submoduleCfg: [], relativeTargetDir: 'deployment']]
+//                         extensions: [[$class: 'RelativeTargetDirectory', $class: 'LocalBranch', localBranch: "**", submoduleCfg: [], relativeTargetDir: 'deployment']]
                     ])
 //                     checkout([
 //                         $class: 'GitSCM',
@@ -27,8 +28,11 @@ pipeline {
             steps {
                 script {
                     // Commit and push the changes
-                    sh 'ls -ltr'
-                    sh 'ls -ltr & chmod 755 gitsync.sh && ./gitsync.sh'
+                    sh '''
+                        cp -rf "path/test" "path_new/test"
+                        find path_new/ -type f -exec sed -i "s/file/new_file/g" {} \;
+                        git add -u && git commit -m "Test" && git push
+                    '''
                 }
             }
         }
