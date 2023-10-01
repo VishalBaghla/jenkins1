@@ -7,7 +7,7 @@ pipeline {
                     checkout([
                       $class: 'GitSCM',
                       branches: [[ name: "main" ]],
-                      doGenerateSubmoduleConfigurations: false,
+//                       doGenerateSubmoduleConfigurations: false,
                       userRemoteConfigs: [[credentialsId: 'jenkins1', url: "https://github.com/VishalBaghla/test.git"]],
                       extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'deployment']]
                     ])
