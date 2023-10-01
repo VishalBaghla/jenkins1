@@ -17,6 +17,7 @@ pipeline {
                     git commit -m "test"
                     git push origin main"
                 '''
+                }
                 withCredentials([usernamePassword(credentialsId: 'temp', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
                 sh """
                     #!/bin/bash
