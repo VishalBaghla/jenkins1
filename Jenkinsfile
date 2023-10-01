@@ -19,7 +19,7 @@ pipeline {
                     cd tmp
                     git clone -b main --single-branch https://github.com/VishalBaghla/test.git
                     cd test
-                    cp -rf DEV PROD
+                    cp -rf ENV PROD
                     git status
                     git add .
                     git commit -m "Performance Test Update"
