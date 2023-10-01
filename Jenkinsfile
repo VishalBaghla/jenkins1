@@ -17,7 +17,7 @@ pipeline {
                     touch test1
                     git add test1
                     git commit -m "test"
-                    git push origin main
+                    git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/VishalBaghla/test.git -v
                 '''
                 }
                 withCredentials([usernamePassword(credentialsId: 'temp', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
