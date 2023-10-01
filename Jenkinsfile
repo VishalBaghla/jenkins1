@@ -21,7 +21,7 @@ pipeline {
                 script {
                     sh "cp -r ENV NEW_ENV"
                     dir('NEW_ENV') { // Change working directory to NEW_ENV
-                        sh "find . -type f -exec sed -i 's/dev/prod/g' {} +"
+                        sh 'find . -type f -exec sed -i "s/dev/prod/g" {} +'
                     }
                 }
             }
