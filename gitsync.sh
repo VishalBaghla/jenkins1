@@ -24,6 +24,7 @@ ls -ltr
 #git add $DESTINATION_PROJECT
 #git commit -m "Creating new project configs"
 git status
-git checkout
+git checkout test
+git status
 #git push
 #git status
