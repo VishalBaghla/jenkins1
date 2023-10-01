@@ -3,19 +3,17 @@ pipeline {
     stages {
         stage("Checkout code") {
             steps {
-                ansiColor('xterm') {
-                    script {
-                        checkout([
-                          $class: 'GitSCM',
-                          branches: [[ name: "main" ]],
-                          doGenerateSubmoduleConfigurations: false,
-                          userRemoteConfigs: [[credentialsId: 'GIT', url: "https://github.com/VishalBaghla/personal.git"]],
-                          extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'deployment']]
-                        ])
-                        withCredentials([usernamePassword(credentialsId: 'GIT', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
-                        sh "echo 'test'"
-            //            sh "chmod 755 gitsync.sh && ./gitsync.sh"
-                        }
+                script {
+                    checkout([
+                      $class: 'GitSCM',
+                      branches: [[ name: "main" ]],
+                      doGenerateSubmoduleConfigurations: false,
+                      userRemoteConfigs: [[credentialsId: 'GIT', url: "https://github.com/VishalBaghla/personal.git"]],
+                      extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'deployment']]
+                    ])
+                    withCredentials([usernamePassword(credentialsId: 'GIT', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
+                    sh "echo 'test'"
+        //            sh "chmod 755 gitsync.sh && ./gitsync.sh"
                     }
                 }
             }
