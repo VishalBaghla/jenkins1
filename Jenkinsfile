@@ -1,39 +1,34 @@
 pipeline {
     agent any
+
     environment {
-        GIT_CREDENTIALS = credentials('http')
+        // Define a map variable with key-value pairs
+        myMap = [app1: 'value1', app2: 'value2', app3: 'value3']
+
+        // Define a list variable
+        myList = ['item1', 'item2', 'item3']
     }
+
     stages {
-        stage('Create and Push test.sh') {
+        stage('Loop Over Map and List') {
             steps {
-                sh '''
-                    #!/bin/sh -e
-                    cd $WORKSPACE
-                    mkdir -p tmp
-                    cd tmp
-                    git clone -b main https://${GIT_CREDENTIALS}@github.com/VishalBaghla/test.git
-                    ls -ltr
-                    cd test
-                    touch newfile1
-                    git config --global user.email "vishal.baghla@gmail.com"
-                    git config --global user.name "vishal"
-                    git add . --all
-                    git status
-                    git commit -am "adding pom.xml"
-                    git push https://${GIT_CREDENTIALS}@github.com/VishalBaghla/test.git
-                '''
+                script {
+                    // Iterate over the list
+                    for (listItem in env.myList) {
+                        echo "Processing list item: $listItem"
+
+                        // Iterate over the map
+                        for (mapEntry in env.myMap) {
+                            def appName = mapEntry.key
+                            def appValue = mapEntry.value
+
+                            // Execute a shell script with values from both map and list
+                            sh "echo 'Processing $appName with value $appValue and list item $listItem'"
+                            // Add more shell commands as needed
+                        }
+                    }
+                }
             }
-        }
-    }
-    post {
-        success {
-          sh "echo Success."
-        }
-        failure {
-          sh "echo Failure."
-        }
-        always {
-            cleanWs()
         }
     }
 }
