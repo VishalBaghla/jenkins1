@@ -20,6 +20,7 @@ pipeline {
                     git clone -b main --single-branch https://github.com/VishalBaghla/test.git
                 '''
                 sh '''
+                    ls -ltr
                     cd test
                     touch newfile
                     git config --global user.email "vishal.baghla@gmail.com"
