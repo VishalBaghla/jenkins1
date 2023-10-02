@@ -19,7 +19,7 @@ pipeline {
                     cd tmp
                     git clone -b main https://github.com/VishalBaghla/test.git
                     ls -ltr
-                    cd tmp/test
+                    cd test
                     touch newfile
                     git config --global user.email "vishal.baghla@gmail.com"
                     git config --global user.name "vishal"
