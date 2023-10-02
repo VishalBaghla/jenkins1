@@ -1,11 +1,7 @@
 def documentationDir = 'deploy'
 
 pipeline {
-    agent {
-        dockerfile {
-            label 'linux'
-        }
-    }
+    agent any
     environment {
         GIT_CREDENTIALS = credentials('temp')
     }
@@ -16,7 +12,6 @@ pipeline {
 //                     sh "chmod 755 gitsync.sh && ./gitsync.sh"
 //                 }
 //                 withCredentials([usernamePassword(credentialsId: "${env.GIT_CREDENTIALS}", passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
-                sshagent (credentials: ["${env.GIT_CREDENTIALS}"]) {
                 sh '''
                     #!/bin/sh -e
                     cd $WORKSPACE
@@ -34,7 +29,7 @@ pipeline {
                     git push https://${GIT_CREDENTIALS}@github.com/VishalBaghla/test.git
 //                     git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/VishalBaghla/test.git
                 '''
-                }
+//                 }
             }
         }
     }
