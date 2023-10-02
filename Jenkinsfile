@@ -18,6 +18,8 @@ pipeline {
                     mkdir -p tmp
                     cd tmp
                     git clone -b main --single-branch https://github.com/VishalBaghla/test.git
+                '''
+                sh '''
                     cd test
                     touch newfile
                     git config --global user.email "vishal.baghla@gmail.com"
