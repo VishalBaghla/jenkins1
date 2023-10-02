@@ -14,7 +14,7 @@ pipeline {
                     git clone -b main https://${GIT_CREDENTIALS}@github.com/VishalBaghla/test.git
                     ls -ltr
                     cd test
-                    touch newfile
+                    touch newfile1
                     git config --global user.email "vishal.baghla@gmail.com"
                     git config --global user.name "vishal"
                     git add . --all
