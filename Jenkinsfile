@@ -3,10 +3,10 @@ pipeline {
 
     environment {
         // Define a map variable with key-value pairs
-        myMap = [app1: 'value1', app2: 'value2', app3: 'value3']
+        myMap = [app1: 'value1', app2: 'value2', app3: 'value3'].toString()
 
         // Define a list variable
-        myList = ['item1', 'item2', 'item3']
+        myList = ['item1', 'item2', 'item3'].toString()
     }
 
     stages {
