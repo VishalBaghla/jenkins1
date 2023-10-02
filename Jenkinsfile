@@ -13,15 +13,16 @@ pipeline {
         stage('Loop Over Map and List') {
             steps {
                 script {
+                    // Convert the map and list strings back to objects
+                    def map = evaluate(env.myMap)
+                    def list = evaluate(env.myList)
+
                     // Iterate over the list
-                    for (listItem in env.myList) {
+                    for (listItem in list) {
                         echo "Processing list item: $listItem"
 
                         // Iterate over the map
-                        for (mapEntry in env.myMap) {
-                            def appName = mapEntry.key
-                            def appValue = mapEntry.value
-
+                        map.each { appName, appValue ->
                             // Execute a shell script with values from both map and list
                             sh "echo 'Processing $appName with value $appValue and list item $listItem'"
                             // Add more shell commands as needed
