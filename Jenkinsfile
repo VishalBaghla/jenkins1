@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        GIT_CREDENTIALS = credentials('temp')
+        GIT_CREDENTIALS = credentials('http')
     }
     stages {
         stage('Create and Push test.sh') {
