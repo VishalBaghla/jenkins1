@@ -19,11 +19,19 @@ pipeline {
                     cd tmp
                     git clone -b main --single-branch https://github.com/VishalBaghla/test.git
                     cd test
-                    cp -rf ENV PROD
+                    touch newfile
+                    git config --global user.email "ariesdev-jenkins@marriott.com"
+                    git config --global user.name "ariesdev-jenkins"
+                    git add . --all
                     git status
-                    git add .
-                    git commit -m "Performance Test Update"
-                    git push https://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@github.com/VishalBaghla/test.git
+                    rc=$(git status --porcelain|wc -l)
+                    if [ $rc -ne 0 ]; then
+                        git commit -am "adding pom.xml"
+                        git push
+                        if [ $? -eq 0 ]; then
+                            echo "Successfully Git Sync'd to Repo"
+                        fi
+                    fi
                 '''
                 }
             }
