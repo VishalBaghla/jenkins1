@@ -11,7 +11,7 @@ pipeline {
 //                 withCredentials([usernamePassword(credentialsId: 'temp', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
 //                     sh "chmod 755 gitsync.sh && ./gitsync.sh"
 //                 }
-                withCredentials([usernamePassword(credentialsId: 'temp', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
+//                 withCredentials([usernamePassword(credentialsId: 'temp', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
                 sh '''
                     #!/bin/sh -e
                     cd $WORKSPACE
@@ -26,9 +26,10 @@ pipeline {
                     git add . --all
                     git status
                     git commit -am "adding pom.xml"
-                    git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/VishalBaghla/test.git
+                    git push https://${GIT_CREDENTIALS}@github.com/VishalBaghla/test.git
+//                     git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/VishalBaghla/test.git
                 '''
-                }
+//                 }
             }
         }
     }
