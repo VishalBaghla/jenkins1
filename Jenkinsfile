@@ -20,8 +20,8 @@ pipeline {
                     git clone -b main --single-branch https://github.com/VishalBaghla/test.git
                     cd test
                     touch newfile
-                    git config --global user.email "ariesdev-jenkins@marriott.com"
-                    git config --global user.name "ariesdev-jenkins"
+                    git config --global user.email "vishal.baghla@gmail.com"
+                    git config --global user.name "vishal"
                     git add . --all
                     git status
                     rc=$(git status --porcelain|wc -l)
