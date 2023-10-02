@@ -28,7 +28,6 @@ pipeline {
                     git add . --all
                     git status
                     git commit -am "adding pom.xml"
-                    git push https://github.com/VishalBaghla/test.git
                     git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/VishalBaghla/test.git
                 '''
                 }
