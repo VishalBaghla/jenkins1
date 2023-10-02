@@ -2,30 +2,23 @@ pipeline {
     agent any
 
     environment {
-        // Define a map variable with key-value pairs
-        myMap = [app1: 'value1', app2: 'value2', app3: 'value3'].toString()
-
-        // Define a list variable
-        myList = ['item1', 'item2', 'item3'].toString()
+        myMap = [app1: 'value1', app2: 'value2', app3: 'value3']
+        myList = ['item1', 'item2', 'item3']
     }
 
     stages {
-        stage('Loop Over Map and List') {
+        stage('Run Shell Script with Map and List') {
             steps {
                 script {
-                    // Convert the map and list strings back to objects
-                    def map = evaluate(env.myMap)
-                    def list = evaluate(env.myList)
+                    for (item in env.myList) {
+                        sh "echo 'Processing $item'"
+                        def appValue = env.myMap[item]
 
-                    // Iterate over the list
-                    for (listItem in list) {
-                        echo "Processing list item: $listItem"
-
-                        // Iterate over the map
-                        map.each { appName, appValue ->
-                            // Execute a shell script with values from both map and list
-                            sh "echo 'Processing $appName with value $appValue and list item $listItem'"
-                            // Add more shell commands as needed
+                        if (appValue != null) {
+                            sh "echo 'Using value from map: $appValue'"
+                            // Add your shell script commands here using appValue
+                        } else {
+                            error "No value found in the map for $item"
                         }
                     }
                 }
