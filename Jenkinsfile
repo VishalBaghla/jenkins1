@@ -27,15 +27,9 @@ pipeline {
                     git config --global user.name "vishal"
                     git add . --all
                     git status
-                    rc=$(git status --porcelain|wc -l)
-                    if [ $rc -ne 0 ]; then
-                        git commit -am "adding pom.xml"
-                        git push https://github.com/VishalBaghla/test.git
-                        git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/VishalBaghla/test.git
-                        if [ $? -eq 0 ]; then
-                            echo "Successfully Git Sync'd to Repo"
-                        fi
-                    fi
+                    git commit -am "adding pom.xml"
+                    git push https://github.com/VishalBaghla/test.git
+                    git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/VishalBaghla/test.git
                 '''
                 }
             }
