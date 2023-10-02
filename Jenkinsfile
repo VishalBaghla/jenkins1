@@ -21,7 +21,7 @@ pipeline {
                 '''
                 sh '''
                     ls -ltr
-                    cd test
+                    cd tmp/test
                     touch newfile
                     git config --global user.email "vishal.baghla@gmail.com"
                     git config --global user.name "vishal"
