@@ -1,8 +1,8 @@
 pipeline {
     agent any
     environment {
-        MYMAP=[app1: 'value1', app2: 'value2', app3: 'value3']
         MYLIST=['item1', 'item2', 'item3']
+        MYMAP = [key1: 'value1', key2: 'value2', key3: 'value3']
     }
 
     stages {
