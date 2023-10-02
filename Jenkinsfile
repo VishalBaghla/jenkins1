@@ -17,7 +17,7 @@ pipeline {
                     cd $WORKSPACE
                     mkdir -p tmp
                     cd tmp
-                    git clone -b main https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/VishalBaghla/test.git
+                    git clone -b main https://github.com/VishalBaghla/test.git
                 """
                 sh '''
                     ls -ltr
