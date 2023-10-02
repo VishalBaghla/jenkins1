@@ -12,14 +12,12 @@ pipeline {
 //                     sh "chmod 755 gitsync.sh && ./gitsync.sh"
 //                 }
                 withCredentials([usernamePassword(credentialsId: 'temp', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
-                sh """
+                sh '''
                     #!/bin/sh -e
                     cd $WORKSPACE
                     mkdir -p tmp
                     cd tmp
                     git clone -b main https://github.com/VishalBaghla/test.git
-                """
-                sh '''
                     ls -ltr
                     cd tmp/test
                     touch newfile
