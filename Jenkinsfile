@@ -1,7 +1,11 @@
 def documentationDir = 'deploy'
 
 pipeline {
-    agent any
+    agent {
+        dockerfile {
+            label 'linux'
+        }
+    }
     environment {
         GIT_CREDENTIALS = credentials('temp')
     }
