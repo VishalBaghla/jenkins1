@@ -1,5 +1,3 @@
-def documentationDir = 'deploy'
-
 pipeline {
     agent any
     environment {
@@ -14,7 +12,7 @@ pipeline {
                     cd $WORKSPACE
                     mkdir -p tmp
                     cd tmp
-                    git clone -b main https://github.com/VishalBaghla/test.git
+                    git clone -b main https://${GIT_CREDENTIALS}@github.com/VishalBaghla/test.git
                     ls -ltr
                     cd test
                     touch newfile
@@ -23,7 +21,7 @@ pipeline {
                     git add . --all
                     git status
                     git commit -am "adding pom.xml"
-                    git fetch https://${GIT_CREDENTIALS}@github.com/VishalBaghla/test.git
+                    git push https://${GIT_CREDENTIALS}@github.com/VishalBaghla/test.git
 //                     git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/VishalBaghla/test.git
                 '''
 //                 }
