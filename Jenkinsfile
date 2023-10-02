@@ -6,7 +6,6 @@ pipeline {
     stages {
         stage('Create and Push test.sh') {
             steps {
-//                 withCredentials([usernamePassword(credentialsId: "${env.GIT_CREDENTIALS}", passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
                 sh '''
                     #!/bin/sh -e
                     cd $WORKSPACE
@@ -22,9 +21,7 @@ pipeline {
                     git status
                     git commit -am "adding pom.xml"
                     git push https://${GIT_CREDENTIALS}@github.com/VishalBaghla/test.git
-//                     git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/VishalBaghla/test.git
                 '''
-//                 }
             }
         }
     }
