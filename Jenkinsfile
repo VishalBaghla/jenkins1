@@ -1,26 +1,29 @@
 pipeline {
     agent any
+
+    environment {
+        DOMAIN_NAMES = ['de', 'co.in', 'com']
+        HOST_NAMES = ['aries', 'aries', 'phoenix']
+    }
+
     stages {
-        stage('Deploy Applications') {
+        stage('Deploy') {
             steps {
                 script {
-                    def domainNames = ['de', 'co.in', 'com']
-                    def hostNames = ['aries', 'aries', 'phoenix']
+                    for (int i = 0; i < DOMAIN_NAMES.size(); i++) {
+                        def domainName = DOMAIN_NAMES[i]
+                        def hostName = HOST_NAMES[i]
 
-                    for (int i = 0; i < domainNames.size(); i++) {
-                        def domainName = domainNames[i]
-                        def hostName = hostNames[i]
+                        echo "Deploying domain: ${domainName}, host: ${hostName}"
 
-                        // Replace placeholders in the common deployment template
-                        def ingress = readFile('new.yaml')
-                        ingress = ingress.replace('<DOMAIN_NAME>', domainName)
-                        ingress = ingress.replace('<HOST_NAME>', hostName)
-
-                        // Deploy the application to Kubernetes
+                        // Replace values in new.yaml using sed
                         sh """
-                            echo "${ingress}"
-                            echo "------------------------------"
+                            sed -i 's/DOMAIN_PLACEHOLDER/${domainName}/g' new.yaml
+                            sed -i 's/HOST_PLACEHOLDER/${hostName}/g' new.yaml
                         """
+
+                        // Deploy using kubectl
+                        sh "cat new.yaml"
                     }
                 }
             }
