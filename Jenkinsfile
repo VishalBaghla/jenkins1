@@ -1,24 +1,52 @@
 pipeline {
     agent any
+
     environment {
-        MYLIST=['item1', 'item2', 'item3']
-        MYMAP = [key1: 'value1', key2: 'value2', key3: 'value3']
+        // Define a list of app details
+        appDetails = [
+            [appName: 'app1', imageName: 'my-app-1', tag: 'v1.0'],
+            [appName: 'app2', imageName: 'my-app-2', tag: 'v2.0'],
+            // Add more app details as needed
+        ]
     }
 
     stages {
-        stage('Run Shell Script with Map and List') {
+        stage('Generate and Apply Deployments') {
             steps {
                 script {
-                    for (item in env.MYLIST) {
-                        sh "echo 'Processing $item'"
-                        def appValue = env.MYMAP[item]
+                    // Loop through the app details
+                    for (appDetail in env.appDetails) {
+                        def appName = appDetail.appName
+                        def imageName = appDetail.imageName
+                        def tag = appDetail.tag
 
-                        if (appValue != null) {
-                            sh "echo 'Using value from map: $appValue'"
-                            // Add your shell script commands here using appValue
-                        } else {
-                            error "No value found in the map for $item"
-                        }
+                        // Generate the Kubernetes Deployment YAML content for this app
+                        def deploymentYAML = """
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ${appName}-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: ${appName}
+  template:
+    metadata:
+      labels:
+        app: ${appName}
+    spec:
+      containers:
+        - name: ${appName}-container
+          image: ${imageName}:${tag}
+"""
+
+                        // Write the Deployment YAML to a file
+                        def yamlFileName = "${appName}-deployment.yaml"
+                        writeFile(file: yamlFileName, text: deploymentYAML)
+
+                        // Apply the Deployment to Kubernetes
+                        sh "kubectl apply -f ${yamlFileName}"
                     }
                 }
             }

@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: de
+  namespace: {{k8s_namespace|mandatory}}
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: http
+    nginx.ingress.kubernetes.io/ssl-passthrough: 'false'
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - aries.ram-dev1.dev.cld.marriott.de
+      secretName: tlssecrets
+  rules:
+    - host: aries.ram-dev1.dev.cld.marriott.de
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: ram-nginx-auto-mi-microservice
+                port:
+                  number: {{app_port|mandatory}}
