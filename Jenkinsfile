@@ -12,13 +12,13 @@ pipeline {
                         def hostName = hostNames[i]
 
                         // Replace placeholders in the common deployment template
-                        def deploymentYaml = readFile('new.yaml')
-                        deploymentYaml = deploymentYaml.replace('<DOMAIN_NAME>', domainName)
-                        deploymentYaml = deploymentYaml.replace('<HOST_NAME>', hostName)
+                        def ingress = readFile('new.yaml')
+                        ingress = ingress.replace('<DOMAIN_NAME>', domainName)
+                        ingress = ingress.replace('<HOST_NAME>', hostName)
 
                         // Deploy the application to Kubernetes
                         sh """
-                            echo "${deploymentYaml}"
+                            echo "${ingress}"
                             echo "------------------------------"
                         """
                     }
