@@ -37,7 +37,7 @@ properties([
                 script:
                     'return ["K8S_DEV"]'
             ]
-        ]
+        ]],
         choice(name: 'K8S_SECURITY_ZONE', choices: 'RED\nBLACK', description: 'Security Zone'),
         [$class: 'ChoiceParameter',
             choiceType: 'PT_SINGLE_SELECT',
