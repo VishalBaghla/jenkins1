@@ -17,8 +17,8 @@ pipeline {
             steps {
                 script {
                     // You can access and use the map variable within the script block
-                    echo "Value for key1: ${env.myMap.key1}"
-                    echo "Value for key2: ${env.myMap.key2}"
+                    echo "Value for key1: ${env.myMap['key1']}"
+                    echo "Value for key2: ${env.myMap['key2']}"
                     // Add more echo statements as needed for other keys
                 }
             }
