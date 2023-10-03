@@ -17,7 +17,7 @@ pipeline {
                             sed -i 's/DOMAIN_NAME/${hostName}/g' new.yml
                         """
                     }
-                        sh "cat new.yaml"
+                    sh "cat new.yaml"
                 }
             }
         }
