@@ -8,7 +8,7 @@ pipeline {
                     def domainNames = ['de', 'co.in', 'com']
                     def hostNames = ['aries', 'aries', 'phoenix']
 
-                    for (int i = 0; i < domainNames.size(); i++) {
+                    for (int i = 0; i < DOMAIN_NAMES.size(); i++) {
                         def domainName = DOMAIN_NAMES[i]
                         def hostName = HOST_NAMES[i]
                         echo "Deploying domain: ${domainName}, host: ${hostName}"
