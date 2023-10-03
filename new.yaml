@@ -1,17 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: APP_NAME-deployment
+  name: <APP_NAME>
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: APP_NAME
+  replicas: 3
   template:
-    metadata:
-      labels:
-        app: APP_NAME
     spec:
       containers:
-        - name: APP_NAME-container
-          image: IMAGE_NAME
+        - name: <APP_NAME>-container
+          image: <IMAGE_NAME>
+          env:
+            - name: ENV_VAR_1
+              value: <VALUE_1>
+            - name: ENV_VAR_2
+              value: <VALUE_2>
