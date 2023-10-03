@@ -1,15 +1,11 @@
 pipeline {
     agent any
-
-    environment {
-        DOMAIN_NAMES = ['de', 'co.in', 'com']
-        HOST_NAMES = ['aries', 'aries', 'phoenix']
-    }
-
     stages {
         stage('Deploy') {
             steps {
                 script {
+                    def domainNames = ['de', 'co.in', 'com']
+                    def hostNames = ['aries', 'aries', 'phoenix']
                     for (int i = 0; i < DOMAIN_NAMES.size(); i++) {
                         def domainName = DOMAIN_NAMES[i]
                         def hostName = HOST_NAMES[i]
