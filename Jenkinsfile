@@ -99,11 +99,11 @@ pipeline {
                                 def domainName = domainNames[i]
                                 def hostName = hostNames[i]
                                 def ingressName = ingressNames[i]
-                                sh """
-                                    sed -i 's/DOMAIN_NAME/${domainName}/g' locales.yml
-                                    sed -i 's/HOST_NAME/${hostName}/g' locales.yml
-                                    sed -i 's/INGRESS_NAME/${ingressName}/g' locales.yml
-                                """
+//                                 sh """
+//                                     sed -i 's/DOMAIN_NAME/${domainName}/g' locales.yml
+//                                     sed -i 's/HOST_NAME/${hostName}/g' locales.yml
+//                                     sed -i 's/INGRESS_NAME/${ingressName}/g' locales.yml
+//                                 """
                                 withEnv(["DEPLOYMENT_NAME=${domainName}", "HOST_NAME=${hostName}", "DOMAIN_NAME=mydomain.com"]) {
     		                        sh "cat locales.yml"
 //                                 sh "chmod 755 $KUBECONFIG && kubectl config set-context --current --namespace=${env.K8S_NAMESPACE}"
