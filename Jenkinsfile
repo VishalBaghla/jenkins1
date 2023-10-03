@@ -13,8 +13,8 @@ pipeline {
                         def hostName = hostNames[i]
                         echo "Deploying domain: ${domainName}, host: ${hostName}"
                         sh """
-                            sed -i 's/DOMAIN_PLACEHOLDER/${domainName}/g' new.yaml
-                            sed -i 's/HOST_PLACEHOLDER/${hostName}/g' new.yaml
+                            sed -i 's/DOMAIN_NAME/${domainName}/g' new.yaml
+                            sed -i 's/DOMAIN_NAME/${hostName}/g' new.yaml
                         """
                     }
                         sh "cat new.yaml"
