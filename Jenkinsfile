@@ -1,6 +1,5 @@
 pipeline {
     agent any
-
     stages {
         stage('Replace Values in deployment-common.yaml') {
             steps {
@@ -14,8 +13,8 @@ pipeline {
                         echo "Deploying domain: ${domainName}, host: ${hostName}"
                         sh """
                             cat new.yml
-                            sed -i 's/DOMAIN_NAMES/${domainName}/g' new.yml
-                            sed -i 's/DOMAIN_NAMES/${hostName}/g' new.yml
+                            #sed -i 's/DOMAIN_NAMES/${domainName}/g' new.yml
+                            #sed -i 's/DOMAIN_NAMES/${hostName}/g' new.yml
                         """
                     }
                     sh "cat new.yml"
