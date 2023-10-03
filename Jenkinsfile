@@ -8,9 +8,9 @@ pipeline {
                     def domainNames = ['de', 'co.in', 'com']
                     def hostNames = ['aries', 'aries', 'phoenix']
 
-                    for (int i = 0; i < DOMAIN_NAMES.size(); i++) {
-                        def domainName = DOMAIN_NAMES[i]
-                        def hostName = HOST_NAMES[i]
+                    for (int i = 0; i < domainNames.size(); i++) {
+                        def domainName = domainNames[i]
+                        def hostName = hostNames[i]
                         echo "Deploying domain: ${domainName}, host: ${hostName}"
                         sh """
                             sed -i 's/DOMAIN_PLACEHOLDER/${domainName}/g' new.yaml
