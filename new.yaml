@@ -3,9 +3,6 @@ kind: Ingress
 metadata:
   name: <DOMAIN_NAME>
   namespace: {{k8s_namespace|mandatory}}
-  annotations:
-    nginx.ingress.kubernetes.io/backend-protocol: http
-    nginx.ingress.kubernetes.io/ssl-passthrough: 'false'
 spec:
   ingressClassName: nginx
   tls:
