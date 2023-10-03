@@ -20,7 +20,7 @@ pipeline {
 
                         // Deploy the application to Kubernetes
                         sh """
-                            echo "${deploymentYaml}"
+//                             echo "${deploymentYaml}"
                             echo "------------------------------"
                         """
                     }
