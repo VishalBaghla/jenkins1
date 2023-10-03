@@ -65,7 +65,7 @@ properties([
 ])
 
 pipeline {
-    agent any
+    agent { label "linux" }
 //     agent {label 'slave'} {
 //         docker {
 //             image 'artifactory.marriott.com/base-images/aries-deployer:v2'
