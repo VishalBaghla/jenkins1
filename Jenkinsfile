@@ -104,7 +104,8 @@ pipeline {
                                     sed -i 's/HOST_NAME/${hostName}/g' locales.yml
                                     sed -i 's/INGRESS_NAME/${ingressName}/g' locales.yml
                                 """
-		                        sh "cat locales.yml"
+                                withEnv(["DEPLOYMENT_NAME=${domainName}", "HOST_NAME=${hostName}", "DOMAIN_NAME=mydomain.com"]) {
+    		                        sh "cat locales.yml"
 //                                 sh "chmod 755 $KUBECONFIG && kubectl config set-context --current --namespace=${env.K8S_NAMESPACE}"
 //                                 if (params.DRY_RUN) {
 //                                     env.DRYRUN='--dry-run'
@@ -117,6 +118,7 @@ pipeline {
 //                                     cat locales.yml
 //                                     kubectl apply -f locales.yml
 //                                 """
+                                }
 			                }
 // 			            }
                     }
