@@ -2,7 +2,6 @@ pipeline {
     agent any
 
     environment {
-        // Define a list of app names, image names, and tags
         appImageList = [
             [appName: 'app1', imageName: 'my-app1', tag: 'v1'],
             [appName: 'app2', imageName: 'my-app2', tag: 'v2'],
