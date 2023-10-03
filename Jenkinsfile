@@ -2,28 +2,26 @@ pipeline {
     agent any
 
     environment {
-        // Define three list variables
-        list1 = ['item1', 'item2', 'item3']
-        list2 = ['apple', 'banana', 'cherry']
-        list3 = ['red', 'green', 'blue']
+        // Define three variables with multiple values
+        var1 = 'value11,value12,value13'
+        var2 = 'value21,value22,value23'
+        var3 = 'value31,value32,value33'
     }
 
     stages {
         stage('Print Values') {
             steps {
                 script {
-                    // Define the number of iterations based on the length of one of the lists
-                    int numIterations = env.list1.size()
+                    // Split the variable values into lists
+                    def var1List = env.var1.split(',')
+                    def var2List = env.var2.split(',')
+                    def var3List = env.var3.split(',')
 
-                    // Loop through the lists and print one value from each
-                    for (int i = 0; i < numIterations; i++) {
-                        def value1 = env.list1[i]
-                        def value2 = env.list2[i]
-                        def value3 = env.list3[i]
-
-                        echo "Value from list1: ${value1}"
-                        echo "Value from list2: ${value2}"
-                        echo "Value from list3: ${value3}"
+                    // Print one value from each variable using a loop
+                    for (int i = 0; i < var1List.size(); i++) {
+                        echo "Value from var1: ${var1List[i]}"
+                        echo "Value from var2: ${var2List[i]}"
+                        echo "Value from var3: ${var3List[i]}"
                     }
                 }
             }
