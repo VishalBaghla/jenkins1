@@ -14,8 +14,8 @@ pipeline {
                         echo "Deploying domain: ${domainName}, host: ${hostName}"
                         sh """
                             cat new.yml
-                            sed -i 's/DOMAIN_NAME/${domainName}/g' new.yml
-                            sed -i 's/DOMAIN_NAME/${hostName}/g' new.yml
+                            sed -i 's/DOMAIN_NAMES/${domainName}/g' new.yml
+                            sed -i 's/DOMAIN_NAMES/${hostName}/g' new.yml
                         """
                     }
                     sh "cat new.yml"
