@@ -21,9 +21,9 @@ pipeline {
                         
                         // Set environment variables for kubectl
                         withEnv(["DEPLOYMENT_NAME=${deploymentName}", "HOST_NAME=${hostName}"]) {
-                            sh 'cat deployment-common.yaml'
-                            sh 'kubectl apply -f deployment-common.yaml --dry-run=client -o yaml'
-                            sh 'cat deployment-common.yaml'
+                            sh 'cat locales.yaml'
+                            sh 'kubectl apply -f locales.yaml --dry-run=client -o yaml'
+                            sh 'cat locales.yaml'
                         }
                     }
                 }
