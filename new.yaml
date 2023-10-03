@@ -13,7 +13,7 @@ spec:
         - aries.ram-dev1.dev.cld.marriott.de
       secretName: tlssecrets
   rules:
-    - host: aries.ram-dev1.dev.cld.marriott.<DOMAIN_NAME>
+    - host: <HOST_NAME>.ram-dev1.dev.cld.marriott.<DOMAIN_NAME>
       http:
         paths:
           - path: /
