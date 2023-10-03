@@ -1,17 +1,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{APP_NAME}}-deployment
+  name: {{ .Values.appName }}
 spec:
   replicas: 3
-  selector:
-    matchLabels:
-      app: {{APP_NAME}}
   template:
-    metadata:
-      labels:
-        app: {{APP_NAME}}
     spec:
       containers:
-        - name: {{APP_NAME}}-container
-          image: {{IMAGE_NAME}}
+        - name: {{ .Values.appName }}
+          image: {{ .Values.imageName }}

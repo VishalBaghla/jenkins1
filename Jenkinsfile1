@@ -4,7 +4,7 @@ pipeline {
     environment {
         appImageList = [
             [appName:app1, imageName: 'my-app1', tag: 'v1'],
-            [appName:app2, imageName: 'my-app2', tag: 'v2']
+            [appName:app2, imageName: 'my-app2', tag: 'v2'],
             [appName:app3, imageName: 'my-app3', tag: 'v3']
         ]
     }
