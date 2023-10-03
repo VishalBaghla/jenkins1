@@ -10,7 +10,7 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - aries.ram-dev1.dev.cld.marriott.de
+        - <HOST_NAME>.ram-dev1.dev.cld.marriott.<DOMAIN_NAME>
       secretName: tlssecrets
   rules:
     - host: <HOST_NAME>.ram-dev1.dev.cld.marriott.<DOMAIN_NAME>
