@@ -15,7 +15,7 @@ pipeline {
             steps {
                 script {
                     // Read the Kubernetes YAML template from a file
-                    def k8sTemplate = readFile('k8s-template.yaml')
+                    def k8sTemplate = readFile('new.yaml')
 
                     // Iterate over the list and apply YAML for each app
                     for (entry in env.appImageList) {
