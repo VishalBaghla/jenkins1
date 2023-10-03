@@ -16,22 +16,22 @@ pipeline {
                     // Read the Kubernetes YAML template from a file
                     def k8sTemplate = readFile('new.yaml')
 
-                    // Iterate over the list and apply YAML for each app
-                    for (entry in env.appImageList) {
-                        def appName = entry.appName
-                        def imageName = entry.imageName
-                        def tag = entry.tag
-
-                        // Replace placeholders in the YAML template with values
-                        def updatedYaml = k8sTemplate.replaceAll('{{APP_NAME}}', appName)
-                        updatedYaml = updatedYaml.replaceAll('{{IMAGE_NAME}}', "${imageName}:${tag}")
-
-                        // Write the updated YAML to a temporary file
-                        def tempFile = writeFile(file: "${appName}-deploy.yaml", text: updatedYaml)
-
-                        // Apply the updated YAML to the Kubernetes cluster
-                        // sh "kubectl apply -f ${tempFile}"
-                    }
+//                     // Iterate over the list and apply YAML for each app
+//                     for (entry in env.appImageList) {
+//                         def appName = entry.appName
+//                         def imageName = entry.imageName
+//                         def tag = entry.tag
+//
+//                         // Replace placeholders in the YAML template with values
+//                         def updatedYaml = k8sTemplate.replaceAll('{{APP_NAME}}', appName)
+//                         updatedYaml = updatedYaml.replaceAll('{{IMAGE_NAME}}', "${imageName}:${tag}")
+//
+//                         // Write the updated YAML to a temporary file
+//                         def tempFile = writeFile(file: "${appName}-deploy.yaml", text: updatedYaml)
+//
+//                         // Apply the updated YAML to the Kubernetes cluster
+//                         // sh "kubectl apply -f ${tempFile}"
+//                     }
                 }
             }
         }
