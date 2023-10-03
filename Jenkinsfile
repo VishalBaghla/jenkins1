@@ -2,51 +2,35 @@ pipeline {
     agent any
 
     environment {
-        // Define a list of app details
-        appDetails = [
-            [appName: 'app1', imageName: 'my-app-1', tag: 'v1.0'],
-            [appName: 'app2', imageName: 'my-app-2', tag: 'v2.0'],
-            // Add more app details as needed
+        appImageList = [
+            [appName:app1, imageName: 'my-app1', tag: 'v1'],
+            [appName:app2, imageName: 'my-app2', tag: 'v2']
+            [appName:app3, imageName: 'my-app3', tag: 'v3']
         ]
     }
 
     stages {
-        stage('Generate and Apply Deployments') {
+        stage('Apply Kubernetes YAML') {
             steps {
                 script {
-                    // Loop through the app details
-                    for (appDetail in env.appDetails) {
-                        def appName = appDetail.appName
-                        def imageName = appDetail.imageName
-                        def tag = appDetail.tag
+                    // Read the Kubernetes YAML template from a file
+                    def k8sTemplate = readFile('new.yaml')
 
-                        // Generate the Kubernetes Deployment YAML content for this app
-                        def deploymentYAML = """
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: ${appName}-deployment
-spec:
-  replicas: 3
-  selector:
-    matchLabels:
-      app: ${appName}
-  template:
-    metadata:
-      labels:
-        app: ${appName}
-    spec:
-      containers:
-        - name: ${appName}-container
-          image: ${imageName}:${tag}
-"""
+                    // Iterate over the list and apply YAML for each app
+                    for (entry in env.appImageList) {
+                        def appName = entry.appName
+                        def imageName = entry.imageName
+                        def tag = entry.tag
 
-                        // Write the Deployment YAML to a file
-                        def yamlFileName = "${appName}-deployment.yaml"
-                        writeFile(file: yamlFileName, text: deploymentYAML)
+                        // Replace placeholders in the YAML template with values
+                        def updatedYaml = k8sTemplate.replaceAll('{{APP_NAME}}', appName)
+                        updatedYaml = updatedYaml.replaceAll('{{IMAGE_NAME}}', "${imageName}:${tag}")
 
-                        // Apply the Deployment to Kubernetes
-                        sh "kubectl apply -f ${yamlFileName}"
+                        // Write the updated YAML to a temporary file
+                        def tempFile = writeFile(file: "${appName}-deploy.yaml", text: updatedYaml)
+
+                        // Apply the updated YAML to the Kubernetes cluster
+                        // sh "kubectl apply -f ${tempFile}"
                     }
                 }
             }
