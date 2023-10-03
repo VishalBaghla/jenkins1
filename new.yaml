@@ -1,16 +1,25 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: networking.k8s.io/v1
+kind: Ingress
 metadata:
-  name: <APP_NAME>
+  name: <DOMAIN_NAME>
+  namespace: {{k8s_namespace|mandatory}}
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: http
+    nginx.ingress.kubernetes.io/ssl-passthrough: 'false'
 spec:
-  replicas: 3
-  template:
-    spec:
-      containers:
-        - name: <APP_NAME>-container
-          image: <IMAGE_NAME>
-          env:
-            - name: ENV_VAR_1
-              value: <VALUE_1>
-            - name: ENV_VAR_2
-              value: <VALUE_2>
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - aries.ram-dev1.dev.cld.marriott.de
+      secretName: tlssecrets
+  rules:
+    - host: aries.ram-dev1.dev.cld.marriott.<DOMAIN_NAME>
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: ram-nginx-auto-mi-microservice
+                port:
+                  number: {{app_port|mandatory}}
