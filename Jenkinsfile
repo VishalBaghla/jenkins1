@@ -102,7 +102,7 @@ pipeline {
 //                                     cat locales.yml
 //                                     kubectl apply -f locales.yml
 //                                 """
-                                }
+//                                 }
 			                }
 // 			            }
                     }
