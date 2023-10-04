@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ${DEPLOYMENT_NAME}-deployment
+  name: {{ DEPLOYMENT_NAME }}
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: ${DEPLOYMENT_NAME}
+      app: {{ DEPLOYMENT_NAME }}
   template:
     metadata:
       labels:
-        app: ${DEPLOYMENT_NAME}
+        app: {{ DEPLOYMENT_NAME }}
     spec:
       containers:
-        - name: ${DEPLOYMENT_NAME}-container
+        - name: {{ DEPLOYMENT_NAME }}-container
           image: your-image:${HOST_NAME}
           ports:
             - containerPort: 80

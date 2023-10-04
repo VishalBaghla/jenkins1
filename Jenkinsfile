@@ -19,15 +19,37 @@ pipeline {
                         
                         echo "Deploying ${deploymentName} to ${hostName}"
                         
-                        // Set environment variables for kubectl
-                        withEnv(["DEPLOYMENT_NAME=${deploymentName}", "HOST_NAME=${hostName}"]) {
-                            sh 'cat locales.yml'
-                            sh 'curl -LO "https://storage.googleapis.com/kubernetes-release/release/v1.20.5/bin/linux/amd64/kubectl"'
-                            sh 'chmod u+x ./kubectl'
-                            sh 'ls -ltr'
-                            sh './kubectl apply -f locales.yml --dry-run=client -o yaml'
-                            sh 'cat locales.yml'
-                        }
+                        // Create a template YAML file with placeholders
+                        def templateYAML = """
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: \${DEPLOYMENT_NAME}-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: \${DEPLOYMENT_NAME}
+  template:
+    metadata:
+      labels:
+        app: \${DEPLOYMENT_NAME}
+    spec:
+      containers:
+      - name: \${DEPLOYMENT_NAME}-container
+        image: your-image:\${HOST_NAME}
+        ports:
+        - containerPort: 80
+"""
+
+                        // Substitute environment variables in the template YAML
+                        def substitutedYAML = templateYAML.replaceAll('\\${DEPLOYMENT_NAME}', deploymentName).replaceAll('\\${HOST_NAME}', hostName)
+
+                        // Write the substituted YAML to a file
+                        writeFile(file: "deploy-${deploymentName}.yaml", text: substitutedYAML)
+
+                        // Apply the substituted YAML using kubectl
+                        sh "kubectl apply -f deploy-${deploymentName}.yaml"
                     }
                 }
             }
