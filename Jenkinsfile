@@ -1,20 +1,3 @@
-import groovy.json.JsonSlurperClassic
-def installHelm() {
-    ansiColor('xterm') {
-        echo 'Installing Helm components.'
-        sh("curl -s -o helm https://artifactory.marriott.com:443/artifactory/aad/binaries/helm/linux-amd64/helm")
-        sh("chmod +x ./helm")
-    }
-}
-
-def installMITEC() {
-    ansiColor('xterm') {
-        echo 'MI TEC binary not found. Installing now.'
-        sh("curl -s -o mi-tec https://artifactory.marriott.com/artifactory/aad/binaries/mi-tec/3/mi-tec")
-        sh("chmod +x ./mi-tec")
-    }
-}
-
 properties([
     parameters([
         [$class: 'ChoiceParameter',
@@ -101,7 +84,7 @@ pipeline {
                                 def hostName = hostNames[i]
                                 def ingressName = ingressNames[i]
                                 sh """
-                                    sed -i 's/DOMAIN_NAME/${domainName}/g; s/HOST_NAME/${hostName}/g; s/INGRESS_NAME/${ingressName}/g' locales.yml |  kubectl apply -f -
+                                    sed -i 's/DOMAIN_NAME/${domainName}/g; s/HOST_NAME/${hostName}/g; s/INGRESS_NAME/${ingressName}/g; s/K8S_NAMESPACE/${K8S_NAMESPACE}/g; s/K8S_SERVER/${K8S_SERVER}/g; s/K8S_SECURITY_ZONE/${K8S_SECURITY_ZONE}/g' locales.yml
                                 """
 //                                 withEnv(["DEPLOYMENT_NAME=${domainName}", "HOST_NAME=${hostName}", "DOMAIN_NAME=mydomain.com"]) {
 //     		                        sh "cat locales.yml"
