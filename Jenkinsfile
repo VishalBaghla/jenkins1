@@ -22,6 +22,8 @@ pipeline {
                         // Set environment variables for kubectl
                         withEnv(["DEPLOYMENT_NAME=${deploymentName}", "HOST_NAME=${hostName}"]) {
                             sh 'cat locales.yml'
+                            sh 'curl -LO "https://storage.googleapis.com/kubernetes-release/release/v1.20.5/bin/linux/amd64/kubectl"'
+                            sh 'chmod u+x ./kubectl'
                             sh 'kubectl apply -f locales.yml --dry-run=client -o yaml'
                             sh 'cat locales.yml'
                         }
