@@ -91,7 +91,7 @@ pipeline {
             try {
                 def jsonFileContents = readFile('test.json')
                 def jsonSlurper = new JsonSlurper().parseText(jsonFileContents)
-                def port = jsonSlurper[${K8S_SERVER}]
+                def port = jsonSlurper[K8S_SERVER]
 
                 echo "${port}"
             } catch (Exception e) {
