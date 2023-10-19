@@ -91,13 +91,13 @@ pipeline {
             try {
                 def jsonFileContents = readFile('test.json')
                 def jsonSlurper = new JsonSlurper().parseText(jsonFileContents)
-                echo ${jsonSlurper}
+//                 echo ${jsonSlurper}
                 // Convert the LazyMap to a serializable HashMap
 //                 appMap = lazyMap.collectEntries { k, v -> [k, v] as Serializable }
 
 //                 def environmentName = appMap[appName]
 
-//                 echo "Selected App Name: ${appName}"
+                echo "Selected App Name: ${jsonSlurper}"
 //                 echo "Environment Name: ${environmentName}"
             } catch (Exception e) {
                 error "Error reading or parsing the JSON file: test.json. Error: ${e.message}"
