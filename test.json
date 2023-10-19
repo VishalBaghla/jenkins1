@@ -1,4 +1,4 @@
 {
-  "K8S_DEV" : "value",
-  "foo" : "bar"
+  "K8S_DEV" : "8080",
+  "foo" : "8081"
 }
