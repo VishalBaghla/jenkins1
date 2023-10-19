@@ -1,28 +1,51 @@
+properties([
+     parameters([
+        [$class: 'ChoiceParameter',
+            choiceType: 'PT_MULTI_SELECT',
+            description: 'LOCALE_NAME',
+            filterLength: 1,
+            filterable: false,
+            name: 'NAMESPACE',
+            script: [
+                $class: 'GroovyScript',
+                fallbackScript: [
+                    classpath: [],
+                    sandbox: false,
+                    script:
+                        'return [\'Error\']'
+                ],
+                script: [
+                    classpath: [],
+                    sandbox: true,
+                    script:
+                        'return ["de","it","co.kr","fr","pt","co.uk","co.jp","com.tr","com.ru","com.br","com.cn","com.au","com"]'
+                ]
+            ]
+        ]
+    ])
+])
+
 pipeline {
     agent any
     stages {
-        stage('Deploy') {
+        stage('Deploy to Selected Namespaces') {
             steps {
                 script {
-                    def domainNames = ['de', 'co.in', 'com']
-                    def hostNames = ['aries', 'aries', 'phoenix']
-                    for (int i = 0; i < DOMAIN_NAMES.size(); i++) {
-                        def domainName = DOMAIN_NAMES[i]
-                        def hostName = HOST_NAMES[i]
-
-                        echo "Deploying domain: ${domainName}, host: ${hostName}"
-
-                        // Replace values in new.yaml using sed
-                        sh """
-                            sed -i 's/DOMAIN_PLACEHOLDER/${domainName}/g' new.yaml
-                            sed -i 's/HOST_PLACEHOLDER/${hostName}/g' new.yaml
-                        """
-
-                        // Deploy using kubectl
-                        sh "cat new.yaml"
+                    def selectedNamespaces = params.K8S_NAMESPACE.split(',')
+                    for (def namespace in selectedNamespaces) {
+                        sh "echo $namespace"
                     }
                 }
             }
+        }
+    }
+
+    post {
+        success {
+            echo "Deployment to selected namespaces succeeded."
+        }
+        failure {
+            echo "Deployment to selected namespaces failed."
         }
     }
 }
