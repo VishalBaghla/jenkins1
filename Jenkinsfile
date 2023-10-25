@@ -3,11 +3,11 @@ import groovy.json.JsonSlurper
 properties([
      parameters([
         [$class: 'ChoiceParameter',
-            choiceType: 'PT_MULTI_SELECT',
+            choiceType: 'PT_SINGLE_SELECT',
             description: 'LOCALE_NAME',
             filterLength: 1,
             filterable: false,
-            name: 'APP',
+            name: 'all_apps',
             script: [
                 $class: 'GroovyScript',
                 fallbackScript: [
@@ -20,16 +20,17 @@ properties([
                     classpath: [],
                     sandbox: true,
                     script:
-                        'return ["de","it","co.kr","fr","pt","co.uk","co.jp","com.tr","com.ru","com.br","com.cn","com.au","com"]'
+                        'return ["all"]'
                 ]
             ]
         ],
-        [$class: 'CascadeChoiceParameter',
-        choiceType: 'PT_SINGLE_SELECT',
+        [$class: 'ChoiceParameter',
+        choiceType: 'PT_CHECKBOX',
 	    description: 'PREFIX',
         filterLength: 1,
         filterable: false,
-        name: 'PREFIX',
+        name: 'APPS',
+        referencedParameters: 'all_apps',
         script: [
             $class: 'GroovyScript',
             fallbackScript: [
@@ -41,8 +42,23 @@ properties([
             script: [
                 classpath: [],
                 sandbox: true,
-                script:
-                    'return ["aries","espanol.aries","arabic.aries"]'
+                script: [
+                    $class: 'GroovyScript',
+                    script: """
+//                         def url = "https://artifactory.xyz.com/artifactory/aad/active-choices/test.json"
+                        def url = readFile('test.json')
+                        import groovy.json.JsonSlurper
+                        def json = url.toURL().getText(requestProperties: [Accept: 'application/json'])
+                        def apps = new JsonSlurper().parseText(json)
+                        def options = apps.keySet().collect { option ->
+                            [name: option, value: option]
+                        }
+                        if (binding.variables['all_apps']) {
+                            options.each { it.selected = true }
+                        }
+                        return options
+                    """
+                ]
             ]
         ]],
         [$class: 'ChoiceParameter',
@@ -92,7 +108,6 @@ pipeline {
                 def jsonFileContents = readFile('test.json')
                 def jsonSlurper = new JsonSlurper().parseText(jsonFileContents)
                 def port = jsonSlurper[K8S_SERVER]
-
                 echo "${port}"
             } catch (Exception e) {
                 error "Error reading or parsing the JSON file: test.json. Error: ${e.message}"

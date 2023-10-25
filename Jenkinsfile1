@@ -18,7 +18,7 @@ properties([
                     classpath: [],
                     sandbox: true,
                     script:
-                        'return ["de","it","co.kr","fr","pt","co.uk","co.jp","com.tr","com.ru","com.br","com.cn","com.au","com"]'
+                        'return ["com"]'
                 ]
             ]
         ]
