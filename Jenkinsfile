@@ -58,8 +58,8 @@ pipeline {
                 "tld": "example.com"
             },
             "uk": {
-                "subdomain": "arabic",
-                "domain_name": "new",
+                "subdomain": "",
+                "domain_name": "",
                 "tld": "example.com"
             }
         }
@@ -73,22 +73,26 @@ pipeline {
                     // Parse the JSON mappings
                     def k8sNamespaceMap = new JsonSlurper().parseText(env.K8S_NAMESPACE_MAPPING)
                     def domainMapping = new JsonSlurper().parseText(env.DOMAIN_MAPPING)
+                    def selectedDomains = params.DOMAINS.split(',')
+                    env.ENVIRONMENT = k8sNamespaceMap[params.K8S_NAMESPACE]
 
                     // Iterate through selected domains
-                    for (DOMAIN in params.DOMAINS) {
-                        env.DOMAIN = DOMAIN
-                        env.ENVIRONMENT = k8sNamespaceMap[params.K8S_NAMESPACE]
-                        env.SUBDOMAIN = domainMapping[DOMAIN].subdomain
-                        env.DOMAIN_NAME = domainMapping[DOMAIN].domain_name
-                        env.TLD = domainMapping[DOMAIN].tld
-                        env.INGRESS_NAME = "eks-${env.DOMAIN}"
+                    for (DOMAIN in selectedDomains) {
+                        if (domainMapping.containsKey(DOMAIN)) {
+                            env.DOMAIN = DOMAIN
+                            env.INGRESS_NAME = "akamai-${env.DOMAIN}"
+                            env.SUBDOMAIN = domainMapping[DOMAIN].subdomain
+                            env.FINAL_SUBDOMAIN = env.SUBDOMAIN.isEmpty() ? env.ENVIRONMENT : "${env.SUBDOMAIN}.${env.ENVIRONMENT}"
+                            env.TLD = domainMapping[DOMAIN].tld
+                            env.DOMAIN_NAME = domainMapping[DOMAIN].domain_name
+                            env.FINAL_DOMAIN = env.DOMAIN_NAME.isEmpty() ? env.TLD : "${env.DOMAIN_NAME}.${env.TLD}"
 
-                        // Create the Ingress for the current domain
-                        echo "Creating Ingress for domain: ${env.DOMAIN}"
-                        echo "Ingress name: ${env.INGRESS_NAME}"
-                        echo "URL: https://www.${env.SUBDOMAIN}.${env.ENVIRONMENT}.${env.DOMAIN_NAME}.${env.TLD}"
-
-                        // Replace this with actual Ingress creation using kubectl or any other method
+                            // Create the Ingress for the current domain
+                            echo "Ingress name: ${env.INGRESS_NAME}"
+                            echo "URL: https://www.${env.FINAL_SUBDOMAIN}.${env.FINAL_DOMAIN}"
+                        } else {
+                            error("Domain '${DOMAIN}' is not defined in DOMAIN_MAPPING.")
+                        }
                     }
                 }
             }
