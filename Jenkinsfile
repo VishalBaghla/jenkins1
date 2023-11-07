@@ -83,12 +83,12 @@ pipeline {
             "us": {
                 "subdomain": "arabic",
                 "domain_name": "reservations",
-                "tld": "example.com"
+                "tld": "marriott.com"
             },
             "uk": {
                 "subdomain": "",
                 "domain_name": "",
-                "tld": "example.com"
+                "tld": "marriott.com"
             }
         }
         '''
@@ -104,9 +104,9 @@ pipeline {
                         def k8sNamespaceMap = new JsonSlurper().parseText(env.K8S_NAMESPACE_MAPPING)
                         def domainMapping = new JsonSlurper().parseText(env.DOMAIN_MAPPING)
                         def selectedDomains = params.DOMAINS.split(',')
+
                         env.ENVIRONMENT = k8sNamespaceMap[params.K8S_NAMESPACE]
 
-                        // Iterate through selected domains
                         for (DOMAIN in selectedDomains) {
                             if (domainMapping.containsKey(DOMAIN)) {
                                 env.DOMAIN = DOMAIN
