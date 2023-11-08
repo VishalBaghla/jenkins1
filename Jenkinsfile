@@ -127,6 +127,7 @@ pipeline {
                                         -e 's/FINAL_DOMAIN/${env.FINAL_DOMAIN}/g' \
                                         -e 's/DEPLOYMENT_MODE/${env.DEPLOYMENT_MODE}/g' \
                                     > locales_updated.yml
+                                    cat locales_updated.yml
                                     kubectl apply -f locales_updated.yml --dry-run=client
                                     """
                                 } else {
