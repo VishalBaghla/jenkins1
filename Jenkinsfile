@@ -98,28 +98,28 @@ pipeline {
         stage('Set Environment Variables and Create Ingress') {
             steps {
                 script {
-                        def k8sNamespaceMap = new JsonSlurper().parseText(env.K8S_NAMESPACE_MAPPING)
-                        def domainMapping = new JsonSlurper().parseText(env.DOMAIN_MAPPING)
-                        def selectedDomains = params.DOMAINS.split(',')
+                    def k8sNamespaceMap = new JsonSlurper().parseText(env.K8S_NAMESPACE_MAPPING)
+                    def domainMapping = new JsonSlurper().parseText(env.DOMAIN_MAPPING)
+                    def selectedDomains = params.DOMAINS.split(',')
 
-                        env.ENVIRONMENT = k8sNamespaceMap[params.K8S_NAMESPACE]
+                    env.ENVIRONMENT = k8sNamespaceMap[params.K8S_NAMESPACE]
 
-                        for (DOMAIN in selectedDomains) {
-                            if (domainMapping.containsKey(DOMAIN)) {
-                                env.DOMAIN = DOMAIN
-                                env.INGRESS_NAME = "akamai-${env.DOMAIN}"
-                                env.SUBDOMAIN = domainMapping[DOMAIN].subdomain
-                                env.FINAL_SUBDOMAIN = env.SUBDOMAIN.isEmpty() ? env.ENVIRONMENT : "${env.SUBDOMAIN}.${env.ENVIRONMENT}"
-                                env.TLD = domainMapping[DOMAIN].tld
-                                env.DOMAIN_NAME = domainMapping[DOMAIN].domain_name
-                                env.FINAL_DOMAIN = env.DOMAIN_NAME.isEmpty() ? env.TLD : "${env.DOMAIN_NAME}.${env.TLD}"
+                    for (DOMAIN in selectedDomains) {
+                        if (domainMapping.containsKey(DOMAIN)) {
+                            env.DOMAIN = DOMAIN
+                            env.INGRESS_NAME = "akamai-${env.DOMAIN}"
+                            env.SUBDOMAIN = domainMapping[DOMAIN].subdomain
+                            env.FINAL_SUBDOMAIN = env.SUBDOMAIN.isEmpty() ? env.ENVIRONMENT : "${env.SUBDOMAIN}.${env.ENVIRONMENT}"
+                            env.TLD = domainMapping[DOMAIN].tld
+                            env.DOMAIN_NAME = domainMapping[DOMAIN].domain_name
+                            env.FINAL_DOMAIN = env.DOMAIN_NAME.isEmpty() ? env.TLD : "${env.DOMAIN_NAME}.${env.TLD}"
 
-                                echo "Ingress name: ${env.INGRESS_NAME}"
-                                echo "URL: https://www.${env.FINAL_SUBDOMAIN}.${env.FINAL_DOMAIN}"
-                                sh "printenv"
-                            } else {
-                                error("Domain '${DOMAIN}' is not defined in DOMAIN_MAPPING.")
-                            }
+                            echo "Ingress name: ${env.INGRESS_NAME}"
+                            echo "URL: https://www.${env.FINAL_SUBDOMAIN}.${env.FINAL_DOMAIN}"
+                            sh "printenv"
+                        } else {
+                            error("Domain '${DOMAIN}' is not defined in DOMAIN_MAPPING.")
+                        }
                     }
                 }
             }
