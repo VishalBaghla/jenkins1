@@ -116,6 +116,7 @@ pipeline {
 
                                 echo "Ingress name: ${env.INGRESS_NAME}"
                                 echo "URL: https://www.${env.FINAL_SUBDOMAIN}.${env.FINAL_DOMAIN}"
+                                sh "printenv"
                             } else {
                                 error("Domain '${DOMAIN}' is not defined in DOMAIN_MAPPING.")
                             }
