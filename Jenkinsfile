@@ -1,4 +1,4 @@
-import groovy.json.JsonSlurperClassic
+import groovy.json.JsonSlurper
 
 properties([
     parameters([
@@ -98,8 +98,8 @@ pipeline {
         stage('Set Environment Variables and Create Ingress') {
             steps {
                 script {
-                    def k8sNamespaceMap = new JsonSlurperClassic().parseText(env.K8S_NAMESPACE_MAPPING)
-                    def domainMapping = new JsonSlurperClassic().parseText(env.DOMAIN_MAPPING)
+                    def k8sNamespaceMap = new JsonSlurper().parseText(env.K8S_NAMESPACE_MAPPING)
+                    def domainMapping = new JsonSlurper().parseText(env.DOMAIN_MAPPING)
                     def selectedDomains = params.DOMAINS.split(',')
 
                     env.ENVIRONMENT = k8sNamespaceMap[params.K8S_NAMESPACE]
