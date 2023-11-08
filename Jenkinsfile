@@ -1,4 +1,4 @@
-import groovy.json.JsonSlurper
+import groovy.json.JsonSlurperClassic
 
 properties([
     parameters([
@@ -98,8 +98,8 @@ pipeline {
         stage('Set Environment Variables and Create Ingress') {
             steps {
                 script {
-                    def k8sNamespaceMap = new JsonSlurper().parseText(env.K8S_NAMESPACE_MAPPING)
-                    def domainMapping = new JsonSlurper().parseText(env.DOMAIN_MAPPING)
+                    def k8sNamespaceMap = new JsonSlurperClassic().parseText(env.K8S_NAMESPACE_MAPPING)
+                    def domainMapping = new JsonSlurperClassic().parseText(env.DOMAIN_MAPPING)
                     def selectedDomains = params.DOMAINS.split(',')
 
                     env.ENVIRONMENT = k8sNamespaceMap[params.K8S_NAMESPACE]
@@ -118,14 +118,14 @@ pipeline {
                             echo "URL: https://www.${env.FINAL_SUBDOMAIN}.${env.FINAL_DOMAIN}"
                             sh """
                             printenv
-                            cat akamai.yml |
+                            cat locales.yml |
                             sed -e 's/INGRESS_NAME/${env.INGRESS_NAME}/g' \
                                 -e 's/K8S_NAMESPACE/${env.K8S_NAMESPACE}/g' \
                                 -e 's/FINAL_SUBDOMAIN/${env.FINAL_SUBDOMAIN}/g' \
                                 -e 's/FINAL_DOMAIN/${env.FINAL_DOMAIN}/g' \
                                 -e 's/DEPLOYMENT_MODE/${env.DEPLOYMENT_MODE}/g' \
-                            > akamai_updated.yml
-                            kubectl apply -f akamai_updated.yml --dry-run=client
+                            > locales_updated.yml
+                            kubectl apply -f locales_updated.yml --dry-run=client
                             """
                         } else {
                             error("Domain '${DOMAIN}' is not defined in DOMAIN_MAPPING.")
