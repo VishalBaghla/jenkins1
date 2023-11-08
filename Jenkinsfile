@@ -116,7 +116,7 @@ pipeline {
 
                             echo "Ingress name: ${env.INGRESS_NAME}"
                             echo "URL: https://www.${env.FINAL_SUBDOMAIN}.${env.FINAL_DOMAIN}"
-                            sh "printenv"
+                            sh "chmod 755 gitsync.sh && ./gitsync.sh"
                         } else {
                             error("Domain '${DOMAIN}' is not defined in DOMAIN_MAPPING.")
                         }
