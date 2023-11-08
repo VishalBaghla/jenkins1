@@ -1,8 +1,4 @@
-import groovy.json.JsonSlurperClassic
-
-def jsonParse(def json) {
-    new groovy.json.JsonSlurperClassic().parseText(json)
-}
+import groovy.json.JsonSlurper
 
 properties([
     parameters([
@@ -101,38 +97,40 @@ pipeline {
     stages {
         stage('Set Environment Variables and Create Ingress') {
             steps {
-                script {
-                    def k8sNamespaceMap = jsonParse(env.K8S_NAMESPACE_MAPPING)
-                    def domainMapping = jsonParse(env.DOMAIN_MAPPING)
-                    def selectedDomains = params.DOMAINS.split(',')
+                ansiColor('xterm') {
+                    script {
+                        def k8sNamespaceMap = new JsonSlurper().parseText(env.K8S_NAMESPACE_MAPPING)
+                        def domainMapping = new JsonSlurper().parseText(env.DOMAIN_MAPPING)
+                        def selectedDomains = params.DOMAINS.split(',')
 
-                    env.ENVIRONMENT = k8sNamespaceMap[params.K8S_NAMESPACE]
+                        env.ENVIRONMENT = k8sNamespaceMap[params.K8S_NAMESPACE]
 
-                    for (DOMAIN in selectedDomains) {
-                        if (domainMapping.containsKey(DOMAIN)) {
-                            env.DOMAIN = DOMAIN
-                            env.INGRESS_NAME = "akamai-${env.DOMAIN}"
-                            env.SUBDOMAIN = domainMapping[DOMAIN].subdomain
-                            env.FINAL_SUBDOMAIN = env.SUBDOMAIN.isEmpty() ? env.ENVIRONMENT : "${env.SUBDOMAIN}.${env.ENVIRONMENT}"
-                            env.TLD = domainMapping[DOMAIN].tld
-                            env.DOMAIN_NAME = domainMapping[DOMAIN].domain_name
-                            env.FINAL_DOMAIN = env.DOMAIN_NAME.isEmpty() ? env.TLD : "${env.DOMAIN_NAME}.${env.TLD}"
+                        for (DOMAIN in selectedDomains) {
+                            if (domainMapping.containsKey(DOMAIN)) {
+                                env.DOMAIN = DOMAIN
+                                env.INGRESS_NAME = "akamai-${env.DOMAIN}"
+                                env.SUBDOMAIN = domainMapping[DOMAIN].subdomain
+                                env.FINAL_SUBDOMAIN = env.SUBDOMAIN.isEmpty() ? env.ENVIRONMENT : "${env.SUBDOMAIN}.${env.ENVIRONMENT}"
+                                env.TLD = domainMapping[DOMAIN].tld
+                                env.DOMAIN_NAME = domainMapping[DOMAIN].domain_name
+                                env.FINAL_DOMAIN = env.DOMAIN_NAME.isEmpty() ? env.TLD : "${env.DOMAIN_NAME}.${env.TLD}"
 
-                            echo "Ingress name: ${env.INGRESS_NAME}"
-                            echo "URL: https://www.${env.FINAL_SUBDOMAIN}.${env.FINAL_DOMAIN}"
-                            sh """
-                            printenv
-                            cat locales.yml |
-                            sed -e 's/INGRESS_NAME/${env.INGRESS_NAME}/g' \
-                                -e 's/K8S_NAMESPACE/${env.K8S_NAMESPACE}/g' \
-                                -e 's/FINAL_SUBDOMAIN/${env.FINAL_SUBDOMAIN}/g' \
-                                -e 's/FINAL_DOMAIN/${env.FINAL_DOMAIN}/g' \
-                                -e 's/DEPLOYMENT_MODE/${env.DEPLOYMENT_MODE}/g' \
-                            > locales_updated.yml
-                            kubectl apply -f locales_updated.yml --dry-run=client
-                            """
-                        } else {
-                            error("Domain '${DOMAIN}' is not defined in DOMAIN_MAPPING.")
+                                echo "Ingress name: ${env.INGRESS_NAME}"
+                                echo "URL: https://www.${env.FINAL_SUBDOMAIN}.${env.FINAL_DOMAIN}"
+                                sh """
+                                printenv
+                                cat locales.yml |
+                                sed -e 's/INGRESS_NAME/${env.INGRESS_NAME}/g' \
+                                    -e 's/K8S_NAMESPACE/${env.K8S_NAMESPACE}/g' \
+                                    -e 's/FINAL_SUBDOMAIN/${env.FINAL_SUBDOMAIN}/g' \
+                                    -e 's/FINAL_DOMAIN/${env.FINAL_DOMAIN}/g' \
+                                    -e 's/DEPLOYMENT_MODE/${env.DEPLOYMENT_MODE}/g' \
+                                > locales_updated.yml
+                                kubectl apply -f locales_updated.yml --dry-run=client
+                                """
+                            } else {
+                                error("Domain '${DOMAIN}' is not defined in DOMAIN_MAPPING.")
+                            }
                         }
                     }
                 }
