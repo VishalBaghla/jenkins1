@@ -121,7 +121,7 @@ pipeline {
                                 echo "Ingress name: ${env.INGRESS_NAME}"
                                 echo "URL: https://www.${env.FINAL_SUBDOMAIN}.${env.FINAL_DOMAIN}"
                                 sh """
-                                cat akamai.yml |
+                                cat locales.yml |
                                 sed -e 's/INGRESS_NAME/${env.INGRESS_NAME}/g' \
                                     -e 's/K8S_NAMESPACE/${env.K8S_NAMESPACE}/g' \
                                     -e 's/FINAL_SUBDOMAIN/${env.FINAL_SUBDOMAIN}/g' \

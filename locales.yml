@@ -1,19 +1,25 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: networking.k8s.io/v1
+kind: Ingress
 metadata:
-  name: ${DEPLOYMENT_NAME} # Use the DEPLOYMENT_NAME environment variable
+  name: INGRESS_NAME
+  namespace: K8S_NAMESPACE
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: http
+    nginx.ingress.kubernetes.io/ssl-passthrough: 'false'
 spec:
-  replicas: ${REPLICA_COUNT} # Use the REPLICA_COUNT environment variable
-  selector:
-    matchLabels:
-      app: ${APP_NAME} # Use the APP_NAME environment variable
-  template:
-    metadata:
-      labels:
-        app: ${APP_NAME} # Use the APP_NAME environment variable
-    spec:
-      containers:
-        - name: ${CONTAINER_NAME} # Use the CONTAINER_NAME environment variable
-          image: ${IMAGE_NAME} # Use the IMAGE_NAME environment variable
-          ports:
-            - containerPort: ${CONTAINER_PORT} # Use the CONTAINER_PORT environment variable
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - FINAL_SUBDOMAIN.FINAL_DOMAIN
+      secretName: tlssecrets
+  rules:
+    - host: www.FINAL_SUBDOMAIN.FINAL_DOMAIN
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: ram-nginx-auto-DEPLOYMENT_MODE
+                port:
+                  number: 80
