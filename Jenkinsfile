@@ -129,7 +129,6 @@ pipeline {
                                         -e 's/DEPLOYMENT_MODE/${env.DEPLOYMENT_MODE}/g' \
                                     > locales_updated.yml
                                     cat locales_updated.yml
-                                    kubectl apply -f locales_updated.yml --dry-run=client
                                     """
                                 } else {
                                     error("Domain '${DOMAIN}' is not defined in DOMAIN_MAPPING.")
