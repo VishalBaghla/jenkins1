@@ -82,13 +82,13 @@ pipeline {
         {
             "us": {
                 "subdomain": "arabic",
-                "domain_name": "reservations",
-                "tld": "marriott.com"
+                "domain_name": "abc",
+                "tld": "xyz.com"
             },
             "uk": {
                 "subdomain": "",
                 "domain_name": "",
-                "tld": "marriott.com"
+                "tld": "xyz.com"
             }
         }
         '''
@@ -98,8 +98,8 @@ pipeline {
         stage('Set Environment Variables and Create Ingress') {
             steps {
                 script {
-                    servercreds ="ARIES_${params.K8S_SERVER}_${params.K8S_SECURITY_ZONE}_KUBECONFIG"
-                    withCredentials([file(credentialsId: servercreds, variable: 'kubeConfig')]) {
+//                     servercreds ="ARIES_${params.K8S_SERVER}_${params.K8S_SECURITY_ZONE}_KUBECONFIG"
+//                     withCredentials([file(credentialsId: servercreds, variable: 'kubeConfig')]) {
                         // Parse the JSON mappings
                         def k8sNamespaceMap = new JsonSlurper().parseText(env.K8S_NAMESPACE_MAPPING)
                         def domainMapping = new JsonSlurper().parseText(env.DOMAIN_MAPPING)
@@ -128,12 +128,12 @@ pipeline {
                                     -e 's/FINAL_DOMAIN/${env.FINAL_DOMAIN}/g' \
                                     -e 's/DEPLOYMENT_MODE/${env.DEPLOYMENT_MODE}/g' \
                                 > akamai_updated.yml
-                                kubectl apply -f akamai_updated.yml --dry-run=client
+                                cat akamai_updated.yml
                                 """
                             } else {
                                 error("Domain '${DOMAIN}' is not defined in DOMAIN_MAPPING.")
                             }
-                        }
+//                         }
                     }
                 }
             }
