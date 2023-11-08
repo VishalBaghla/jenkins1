@@ -98,9 +98,6 @@ pipeline {
         stage('Set Environment Variables and Create Ingress') {
             steps {
                 script {
-//                     servercreds ="ARIES_${params.K8S_SERVER}_${params.K8S_SECURITY_ZONE}_KUBECONFIG"
-//                     withCredentials([file(credentialsId: servercreds, variable: 'kubeConfig')]) {
-                        // Parse the JSON mappings
                         def k8sNamespaceMap = new JsonSlurper().parseText(env.K8S_NAMESPACE_MAPPING)
                         def domainMapping = new JsonSlurper().parseText(env.DOMAIN_MAPPING)
                         def selectedDomains = params.DOMAINS.split(',')
@@ -117,16 +114,13 @@ pipeline {
                                 env.DOMAIN_NAME = domainMapping[DOMAIN].domain_name
                                 env.FINAL_DOMAIN = env.DOMAIN_NAME.isEmpty() ? env.TLD : "${env.DOMAIN_NAME}.${env.TLD}"
 
-                                // Create the Ingress for the current domain
                                 echo "Ingress name: ${env.INGRESS_NAME}"
                                 echo "URL: https://www.${env.FINAL_SUBDOMAIN}.${env.FINAL_DOMAIN}"
                                 sh 'cat akamai_updated.yml'
                                 sh 'printenv'
-
                             } else {
                                 error("Domain '${DOMAIN}' is not defined in DOMAIN_MAPPING.")
                             }
-//                         }
                     }
                 }
             }
