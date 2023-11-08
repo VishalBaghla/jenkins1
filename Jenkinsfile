@@ -119,11 +119,18 @@ pipeline {
                                     echo "Ingress name: ${env.INGRESS_NAME}"
                                     echo "URL: https://www.${env.FINAL_SUBDOMAIN}.${env.FINAL_DOMAIN}"
 
-                                    // Debugging output
-                                    echo "Debug: K8S_NAMESPACE_MAP: ${k8sNamespaceMap}"
-                                    echo "Debug: DOMAIN_MAPPING: ${domainMapping}"
-
-                                    sh "printenv"
+                                    sh """
+                                    printenv
+                                    cat locales.yml |
+                                    sed -e 's/INGRESS_NAME/${env.INGRESS_NAME}/g' \
+                                        -e 's/K8S_NAMESPACE/${env.K8S_NAMESPACE}/g' \
+                                        -e 's/FINAL_SUBDOMAIN/${env.FINAL_SUBDOMAIN}/g' \
+                                        -e 's/FINAL_DOMAIN/${env.FINAL_DOMAIN}/g' \
+                                        -e 's/DEPLOYMENT_MODE/${env.DEPLOYMENT_MODE}/g' \
+                                    > locales_updated.yml
+                                    cat locales_updated.yml
+                                    kubectl apply -f locales_updated.yml --dry-run=client
+                                    """
                                 } else {
                                     error("Domain '${DOMAIN}' is not defined in DOMAIN_MAPPING.")
                                 }
