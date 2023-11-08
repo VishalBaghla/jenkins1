@@ -120,17 +120,16 @@ pipeline {
                                 // Create the Ingress for the current domain
                                 echo "Ingress name: ${env.INGRESS_NAME}"
                                 echo "URL: https://www.${env.FINAL_SUBDOMAIN}.${env.FINAL_DOMAIN}"
-                                sh """
-                                printenv
-                                cat locales.yml |
+                                sh 'cat akamai_updated.yml'
+                                sh 'printenv'
+                                sh "cat locales.yml |
                                 sed -e 's/INGRESS_NAME/${env.INGRESS_NAME}/g' \
                                     -e 's/K8S_NAMESPACE/${env.K8S_NAMESPACE}/g' \
                                     -e 's/FINAL_SUBDOMAIN/${env.FINAL_SUBDOMAIN}/g' \
                                     -e 's/FINAL_DOMAIN/${env.FINAL_DOMAIN}/g' \
                                     -e 's/DEPLOYMENT_MODE/${env.DEPLOYMENT_MODE}/g' \
-                                > akamai_updated.yml
-                                cat akamai_updated.yml
-                                """
+                                > akamai_updated.yml"
+                                sh 'cat akamai_updated.yml'
                             } else {
                                 error("Domain '${DOMAIN}' is not defined in DOMAIN_MAPPING.")
                             }
