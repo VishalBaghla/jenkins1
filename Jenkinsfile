@@ -1,4 +1,4 @@
-import groovy.json.JsonSlurper
+import groovy.json.JsonSlurperClassic
 
 properties([
     parameters([
@@ -100,8 +100,8 @@ pipeline {
                 ansiColor('xterm') {
                     script {
                         try {
-                            def k8sNamespaceMap = new JsonSlurper().parseText(env.K8S_NAMESPACE_MAPPING)
-                            def domainMapping = new JsonSlurper().parseText(env.DOMAIN_MAPPING)
+                            def k8sNamespaceMap = new JsonSlurperClassic().parseText(env.K8S_NAMESPACE_MAPPING)
+                            def domainMapping = new JsonSlurperClassic().parseText(env.DOMAIN_MAPPING)
                             def selectedDomains = params.DOMAINS.split(',')
 
                             env.ENVIRONMENT = k8sNamespaceMap[params.K8S_NAMESPACE]
