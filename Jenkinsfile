@@ -104,9 +104,6 @@ pipeline {
 
                     env.ENVIRONMENT = k8sNamespaceMap[params.K8S_NAMESPACE]
 
-                    def generatedYmlFiles = [:]
-
-
                     for (DOMAIN in selectedDomains) {
                         if (domainMapping.containsKey(DOMAIN)) {
                             env.DOMAIN = DOMAIN
@@ -119,39 +116,20 @@ pipeline {
 
                             echo "Ingress name: ${env.INGRESS_NAME}"
                             echo "URL: https://www.${env.FINAL_SUBDOMAIN}.${env.FINAL_DOMAIN}"
-
-                            // Generate the YML content for this domain
-                            def ymlContent = """
-                            # Your YML content here, using environment variables like \${env.INGRESS_NAME}, \${env.K8S_NAMESPACE}, etc.
+                            sh """
+                            printenv
+                            cat akamai.yml |
+                            sed -e 's/INGRESS_NAME/${env.INGRESS_NAME}/g' \
+                                -e 's/K8S_NAMESPACE/${env.K8S_NAMESPACE}/g' \
+                                -e 's/FINAL_SUBDOMAIN/${env.FINAL_SUBDOMAIN}/g' \
+                                -e 's/FINAL_DOMAIN/${env.FINAL_DOMAIN}/g' \
+                                -e 's/DEPLOYMENT_MODE/${env.DEPLOYMENT_MODE}/g' \
+                            > akamai_updated.yml
+                            kubectl apply -f akamai_updated.yml --dry-run=client
                             """
-
-                            // Store the YML content in the generatedYmlFiles map
-                            generatedYmlFiles[DOMAIN] = ymlContent
-
                         } else {
                             error("Domain '${DOMAIN}' is not defined in DOMAIN_MAPPING.")
                         }
-                    }
-
-                    env.GENERATED_YML_FILES = generatedYmlFiles
-                }
-            }
-        }
-        stage('Create Ingress') {
-            steps {
-                script {
-                    def generatedYmlFiles = env.GENERATED_YML_FILES
-
-                    // Iterate through the generated YML files and create Ingress for each one
-                    for (def DOMAIN in generatedYmlFiles.keySet()) {
-                        def ymlContent = generatedYmlFiles[DOMAIN]
-
-                        // Create the YML file for this domain
-                        def ymlFileName = "akamai_${DOMAIN}.yml"
-                        writeFile file: ymlFileName, text: ymlContent
-
-                        // Apply the YML file to create Ingress (you can use kubectl or other tools)
-                        sh "kubectl apply -f ${ymlFileName} --dry-run=client"
                     }
                 }
             }
