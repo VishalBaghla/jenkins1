@@ -73,8 +73,8 @@ pipeline {
     agent any
 
     environment {
-        HOME="./"
-        KUBECONFIG=".config"
+        HOME = "./"
+        KUBECONFIG = ".config"
         K8S_NAMESPACE = "${params.K8S_NAMESPACE}"
         DEPLOYMENT_MODE = "${params.DEPLOYMENT_MODE}"
         K8S_NAMESPACE_MAPPING = '{"ram-perf1": "dev1", "ram-e2e1": "dev2"}'
@@ -118,24 +118,18 @@ pipeline {
 
                                     echo "Ingress name: ${env.INGRESS_NAME}"
                                     echo "URL: https://www.${env.FINAL_SUBDOMAIN}.${env.FINAL_DOMAIN}"
-                                    sh """
-                                    printenv
-                                    cat locales.yml |
-                                    sed -e 's/INGRESS_NAME/${env.INGRESS_NAME}/g' \
-                                        -e 's/K8S_NAMESPACE/${env.K8S_NAMESPACE}/g' \
-                                        -e 's/FINAL_SUBDOMAIN/${env.FINAL_SUBDOMAIN}/g' \
-                                        -e 's/FINAL_DOMAIN/${env.FINAL_DOMAIN}/g' \
-                                        -e 's/DEPLOYMENT_MODE/${env.DEPLOYMENT_MODE}/g' \
-                                    > locales_updated.yml
-                                    cat locales_updated.yml
-                                    kubectl apply -f locales_updated.yml --dry-run=client
-                                    """
+
+                                    // Debugging output
+                                    echo "Debug: K8S_NAMESPACE_MAP: ${k8sNamespaceMap}"
+                                    echo "Debug: DOMAIN_MAPPING: ${domainMapping}"
+
+                                    sh "printenv"
                                 } else {
                                     error("Domain '${DOMAIN}' is not defined in DOMAIN_MAPPING.")
                                 }
                             }
                         } catch (Exception e) {
-                          error "Error: ${e.message}"
+                            error "Error: ${e.message}"
                         }
                     }
                 }
