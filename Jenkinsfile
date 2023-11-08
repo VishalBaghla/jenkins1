@@ -122,8 +122,7 @@ pipeline {
                                 echo "URL: https://www.${env.FINAL_SUBDOMAIN}.${env.FINAL_DOMAIN}"
                                 sh 'cat akamai_updated.yml'
                                 sh 'printenv'
-                                sh "cat locales.yml |
-                                sed -e 's/INGRESS_NAME/${env.INGRESS_NAME}/g' \
+                                sh "cat locales.yml | sed -e 's/INGRESS_NAME/${env.INGRESS_NAME}/g' \
                                     -e 's/K8S_NAMESPACE/${env.K8S_NAMESPACE}/g' \
                                     -e 's/FINAL_SUBDOMAIN/${env.FINAL_SUBDOMAIN}/g' \
                                     -e 's/FINAL_DOMAIN/${env.FINAL_DOMAIN}/g' \
